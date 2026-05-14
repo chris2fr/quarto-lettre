@@ -6,7 +6,8 @@ local env_for_class = {
   opening = 'div-opening',
   closing = 'div-closing',
   signature = 'div-signature',
-  object = 'div-object',
+  subject = 'div-subject',
+  ref = 'div-ref',
 }
 
 local function wrap_div(el, env)

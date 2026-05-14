@@ -21,18 +21,24 @@ format:
 :::
 
 ::: date
-Paris, le {{< meta date >}}  
-:::
-
-::: object
-{{< meta title >}}  
+{{< meta place >}}, le {{< meta date >}}  
 :::
 
 ::: to
-Jean Dupond  
+Jean Dupont  
 10 rue de la Paix  
 75002 Paris
 :::
+
+
+::: subject
+**{{< meta title >}}**
+:::
+
+::: ref
+réf. {{< meta ref >}}  
+:::
+
 
 ::: opening
 Monsieur Dupont,

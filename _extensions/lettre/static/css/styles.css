@@ -5,7 +5,8 @@ div.lettre {
                "from from from from"
                "timespace timespace timespace timespace"
                "a a to to"
-               "object-label object object object"
+               "subject-label subject subject subject"
+               "ref-label ref ref ref"
                "b opening opening opening"
                "body body body body"
                "c closing closing closing"
@@ -33,12 +34,21 @@ body {
   /* background-color: aqua; */
 }
 
-.object {
-  grid-area: object;
+.subject {
+  grid-area: subject;
 }
 
-.objet-label {
-  grid-area: object-label;
+.ref {
+  grid-area: ref;
+}
+
+.subject-label {
+  grid-area: subject-label;
+  text-align: right;
+  margin-right: 0.5rem;
+}
+.ref-label {
+  grid-area: ref-label;
   text-align: right;
   margin-right: 0.5rem;
 }

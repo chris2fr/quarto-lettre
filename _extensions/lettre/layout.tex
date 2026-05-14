@@ -47,8 +47,9 @@
 % TODO: Add custom LaTeX header directives here
 
 \newenvironment{div-date}{
-  \raggedleft\small
+  \begin{flushright}\small
 }{
+  \end{flushright}
   \vspace{1em}
 }
 
@@ -57,14 +58,6 @@
 }{
   \end{center}
   \vspace{1em}
-}
-
-\newenvironment{div-object}{
-\begin{flushright}
-  \begin{minipage}[leftmargin=11cm]{6cm}
-}{
-  \end{minipage}
-\end{flushright}
 }
 
 \newenvironment{div-to}{
@@ -76,8 +69,26 @@
 \vspace{1em}
 }
 
+\newenvironment{div-subject}{
+\begin{flushright}
+  \begin{minipage}[leftmargin=4cm]{13cm}
+}{
+  \end{minipage}
+\end{flushright}
+}
+
+\newenvironment{div-ref}{
+\begin{flushright}
+  \begin{minipage}[leftmargin=4cm]{13cm}\small
+}{
+  \end{minipage}
+\end{flushright}
+}
+
+
 
 \newenvironment{div-opening}{
+  \vspace{1em}
 \begin{flushright}
   \begin{minipage}[leftmargin=4cm]{13cm}
 }{

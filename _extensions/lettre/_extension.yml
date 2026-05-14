@@ -9,7 +9,7 @@ contributes:
     common:
       variables:
         labels:
-          object: "Objet"
+          subject: "Objet"
       date-format: long
       date: today
     html:
@@ -28,7 +28,7 @@ contributes:
       lot: false
       keep-tex: true
       include-in-header: _partials/header.tex
-      indlude-before-body: _partials/body-before.tex
+      include-before-body: _partials/body-before.tex
       include-after-body: _partials/body-after.tex
       filters:
         - _filters/divs.lua
