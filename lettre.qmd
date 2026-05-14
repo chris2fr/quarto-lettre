@@ -1,0 +1,53 @@
+---
+title: Demande de rendez-vous
+author: Chris Mann
+abstract: This document is a letter test.
+abstract-title: Lettre du 13 mai 2026 de Chris Mann à Jean Dupont pour demander un rendez-vous.
+ref: lettre-2026-05-13-mannchri-dupojean
+lang: fr
+place: Paris
+keywords: none
+pagetitle: none
+format:
+  lettre-html: default
+  lettre-pdf: default
+---
+
+
+::: from
+{{< meta author >}}  
+7 place de l'Eglise  
+92260 Fontenay aux Roses
+:::
+
+::: date
+Paris, le {{< meta date >}}  
+:::
+
+::: object
+{{< meta title >}}  
+:::
+
+::: to
+Jean Dupond  
+10 rue de la Paix  
+75002 Paris
+:::
+
+::: opening
+Monsieur Dupont,
+:::
+
+::: body
+*Lorem Ipsum* is simply dummy text of the printing and typesetting industry ^[Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.]. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+
+It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+:::
+
+::: closing
+Je vous serais reconnaissant de bien vouloir me faire part de vos disponibilités afin que nous puissions convenir d'un rendez-vous à votre convenance.
+:::
+
+::: signature
+{{< meta author >}}
+:::

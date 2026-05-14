@@ -1,0 +1,64 @@
+div.lettre {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+               "from from from from"
+               "timespace timespace timespace timespace"
+               "a a to to"
+               "object-label object object object"
+               "b opening opening opening"
+               "body body body body"
+               "c closing closing closing"
+               "c signature signature signature"
+               "footnotes footnotes footnotes footnotes";
+}
+
+body {
+  background-color: white;
+  margin: 1rem 3rem;
+}
+
+.from {
+  grid-area: from;
+  text-align: center;
+}
+
+.date {
+  grid-area: timespace;
+  text-align: right;
+}
+
+.to {
+  grid-area: to;
+  /* background-color: aqua; */
+}
+
+.object {
+  grid-area: object;
+}
+
+.objet-label {
+  grid-area: object-label;
+  text-align: right;
+  margin-right: 0.5rem;
+}
+
+.opening {
+  grid-area: opening;  gap: 1rem;
+}
+
+.body {
+  grid-area: body;
+}
+
+.closing {
+  grid-area: closing;
+}
+
+.signature {
+  grid-area: signature;
+}
+
+#footnotes {
+  grid-area: footnotes;
+}

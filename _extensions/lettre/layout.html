@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="$lang$">
+
+<head>
+  <meta charset="utf-8">
+  <title>$title$</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  $if(meta.description)$
+  <meta name="description" content="$meta.description$">
+  $endif$
+  $if(meta.og.title)$
+  <meta property="og:title" content="$meta.og.title$">
+  $endif$
+  $if(meta.og.type)$
+  <meta property="og:type" content="$meta.og.type$">
+  $endif$
+  $if(meta.og.url)$
+  <meta property="og:url" content="$meta.og.url$">
+  $endif$
+  $if(meta.og.image)$
+  <meta property="og:image" content="$meta.og.image$">
+  $endif$
+  $if(meta.og.image-alt)$
+  <meta property="og:image:alt" content="$meta.og.image-alt$">
+  $endif$
+  $for(css)$
+  <link rel="stylesheet" href="$css$">
+  $endfor$
+</head>
+
+<body>
+  <div class="lettre">
+    <p class="objet-label">$labels.object$ :</p>
+    $body$
+  </div>
+</body>
+
+</html>

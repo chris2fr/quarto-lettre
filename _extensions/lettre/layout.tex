@@ -1,0 +1,117 @@
+\documentclass[a4paper,11pt,french]{article} 
+
+\def \thetitle {$title$}
+\def \theauthor {$author$}
+\def \thedate {$date$}
+\def \myreference {$ref$}
+% \def \defernumbers true
+%
+% Packages
+%
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[inner=30mm, outer=30mm, top=20mm, bottom=30mm, bindingoffset=0cm, showframe=false]{geometry}
+\usepackage[french]{babel}
+\usepackage[osf]{libertinus}
+\usepackage{csquotes}
+\usepackage{enumitem}
+\usepackage{soul}
+\usepackage{bookmark}
+% \usepackage[style=numeric,backend=biber,block=ragged,defernumbers=true,sorting=none]{biblatex}
+% \usepackage[style=numeric,backend=biber,block=ragged,sorting=none]{biblatex}
+
+% \usepackage{lipsum}
+% BIBTEX ORDERING
+% \DeclareNameAlias{shorthand}{family-given}
+\usepackage[export]{adjustbox}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+
+\fancyhead{}
+\fancyfoot[C]{\thepage\\{\footnotesize \href{tel:+33781811811}{+33 7 81 81 18 11} --- \href{mailto:chris@lesgrandsvoisins.com}{chris@lesgrandsvoisins.com}} --- {\footnotesize Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS Association d'intérêt général de loi 1901 RNA W751240710 SIREN 832760102}}
+
+
+\usepackage[sorting=none]{biblatex}
+\MakeOuterQuote{"}
+
+% \addbibresource{fr.bib}
+
+\title{$title$}
+\author{$author$}
+\date{$date$}
+
+% TODO: Add custom LaTeX header directives here
+
+\newenvironment{div-date}{
+  \raggedleft\small
+}{
+  \vspace{1em}
+}
+
+\newenvironment{div-from}{
+  \begin{center}
+}{
+  \end{center}
+  \vspace{1em}
+}
+
+\newenvironment{div-object}{
+\begin{flushright}
+  \begin{minipage}[leftmargin=11cm]{6cm}
+}{
+  \end{minipage}
+\end{flushright}
+}
+
+\newenvironment{div-to}{
+\begin{flushright}
+  \begin{minipage}[leftmargin=11cm]{6cm}
+}{
+  \end{minipage}
+\end{flushright}
+\vspace{1em}
+}
+
+
+\newenvironment{div-opening}{
+\begin{flushright}
+  \begin{minipage}[leftmargin=4cm]{13cm}
+}{
+  \end{minipage}
+\end{flushright}
+}
+
+\newenvironment{div-body}{
+}{
+  \vspace{1em}
+}
+
+
+\newenvironment{div-closing}{
+\begin{flushright}
+  \begin{minipage}{13cm}
+}{
+\end{minipage}
+\end{flushright}
+  \vspace{1em}
+
+}
+
+\newenvironment{div-signature}{
+\begin{flushright}
+  \begin{minipage}[leftmargin=4cm]{13cm}
+}{
+  \end{minipage}
+\end{flushright}
+}
+
+
+\begin{document}
+
+$body$
+
+\end{document}

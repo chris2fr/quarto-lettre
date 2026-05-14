@@ -1,0 +1,13 @@
+/* Default Styles (English/French/etc.) */
+body {
+  text-align: left;
+  direction: ltr;
+}
+
+/* Specific overrides for Arabic */
+body:lang(ar) {
+  text-align: right;
+  direction: rtl;
+  font-family: 'Amiri', serif;
+}
+
