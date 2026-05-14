@@ -1,57 +1,95 @@
 ---
-title: Demande de rendez-vous
+title: Extension Quarto « Lettre »
 author: Chris Mann
-abstract: This document is a letter test.
-abstract-title: Lettre du 13 mai 2026 de Chris Mann à Jean Dupont pour demander un rendez-vous.
-ref: lettre-2026-05-13-mannchri-dupojean
+ref: lettre-2026-05-14-readme
 lang: fr
 place: Paris
-keywords: none
-pagetitle: none
 format:
   lettre-html: default
   lettre-pdf: default
 ---
 
-
 ::: from
 {{< meta author >}}  
-7 place de l'Eglise  
-92260 Fontenay aux Roses
+7 place de l'Église  
+92260 Fontenay-aux-Roses
 :::
 
+
 ::: date
-{{< meta place >}}, le {{< meta date >}}  
+{{< meta place >}}, le {{< meta date >}}
 :::
 
 ::: to
-Jean Dupont  
-10 rue de la Paix  
-75002 Paris
+Le développeur Quarto  
+À qui de droit
 :::
-
 
 ::: subject
 **{{< meta title >}}**
 :::
 
 ::: ref
-réf. {{< meta ref >}}  
+réf. {{< meta ref >}}
 :::
 
-
 ::: opening
-Monsieur Dupont,
+Madame, Monsieur,
 :::
 
 ::: body
-*Lorem Ipsum* is simply dummy text of the printing and typesetting industry ^[Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.]. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+La présente lettre a pour objet de vous présenter l'extension **Lettre** pour [Quarto](https://quarto.org), qui permet de composer des lettres formelles au format PDF et HTML à partir d'un unique fichier source `.qmd`.
 
-It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+**Installation**
+
+Placez le dossier `_extensions/lettre/` à la racine de votre projet. L'extension requiert Quarto 1.9 ou supérieur.
+
+**Structure d'une lettre**
+
+Le contenu est structuré à l'aide de *divs* Quarto, chacun correspondant à une partie conventionnelle de la lettre :
+
+| Div            | Rôle                                           |
+|----------------|------------------------------------------------|
+| `::: from`     | Coordonnées de l'expéditeur                    |
+| `::: date`     | Lieu et date d'envoi                           |
+| `::: to`       | Adresse du destinataire                        |
+| `::: ref`      | Référence du courrier (petit, aligné à droite) |
+| `::: subject`  | Objet de la lettre                             |
+| `::: opening`  | Formule d'appel (ex. « Madame, »)              |
+| `::: body`     | Corps de la lettre                             |
+| `::: closing`  | Formule de politesse                           |
+| `::: signature`| Nom et qualité du signataire                   |
+
+**En-tête YAML**
+
+Les métadonnées suivantes sont reconnues par l'extension :
+
+- `title` — objet de la lettre, réutilisable via `{{< meta title >}}`
+- `author` — nom de l'expéditeur, réutilisable via `{{< meta author >}}`
+- `ref` — référence interne du courrier
+- `lang` — langue du document (`fr`, `en`, `ar`…)
+- `place` — lieu d'envoi, à insérer dans le div `date`
+- `date` — date du document ; vaut `today` par défaut
+
+**Formats de sortie**
+
+Déclarez dans le YAML les formats souhaités :
+
+```yaml
+format:
+  lettre-html: default
+  lettre-pdf: default
+```
+
+Le format PDF repose sur LaTeX (classe `article`, police *Libertinus*). Le format HTML utilise une mise en page CSS Grid qui reproduit la disposition d'une lettre A4.
+
+**Notes de bas de page**
+
+Les notes sont prises en charge dans les deux formats^[Comme celle-ci, insérée avec la syntaxe `^[…]`.].
 :::
 
 ::: closing
-Je vous serais reconnaissant de bien vouloir me faire part de vos disponibilités afin que nous puissions convenir d'un rendez-vous à votre convenance.
+En espérant que cette extension vous sera utile, je reste à votre disposition pour toute question ou suggestion d'amélioration, et vous adresse mes cordiales salutations.
 :::
 
 ::: signature

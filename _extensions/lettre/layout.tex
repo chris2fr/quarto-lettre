@@ -22,6 +22,13 @@
 \usepackage{bookmark}
 % \usepackage[style=numeric,backend=biber,block=ragged,defernumbers=true,sorting=none]{biblatex}
 % \usepackage[style=numeric,backend=biber,block=ragged,sorting=none]{biblatex}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\newcounter{none}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 % \usepackage{lipsum}
 % BIBTEX ORDERING
@@ -120,6 +127,10 @@
 \end{flushright}
 }
 
+
+$for(header-includes)$
+$header-includes$
+$endfor$
 
 \begin{document}
 

@@ -72,3 +72,17 @@ body {
 #footnotes {
   grid-area: footnotes;
 }
+
+dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.15rem 1rem;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin: 0;
+}
