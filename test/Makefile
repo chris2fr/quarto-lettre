@@ -14,11 +14,11 @@ html:
 
 pdf:
 	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/pdf --to lettre-pdf
-	mv lettre-de-documentation-quarto.tex $(outdir)/pdf/lettre-de-documentation-quarto.tex
+	mv lettre-de-documentation-quarto.tex $(outdir)/pdf/
 
 typst:
 	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/typst --to lettre-typst
-	mv lettre-de-documentation-quarto.typ $(outdir)/typst/lettre-de-documentation-quarto.typ
+	mv lettre-de-documentation-quarto.typ $(outdir)/typst/
 
 md:
 	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/md --to lettre-md
@@ -33,4 +33,4 @@ plain:
 	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/plain --to lettre-plain
 
 preview:
-	quarto preview lettre-de-documentation-quarto.qmd 
+	quarto preview lettre-de-documentation-quarto.qmd

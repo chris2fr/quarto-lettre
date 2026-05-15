@@ -1,0 +1,4 @@
+project:
+  type: default
+  render:
+    - lettre-de-documentation-quarto.qmd

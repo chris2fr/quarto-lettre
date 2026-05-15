@@ -1,0 +1,110 @@
+---
+title: Extension Quarto « Lettre »
+author: Chris Mann
+ref: lettre-2026-05-15
+date: 2026-05-15
+lang: fr
+place: Paris
+format:
+  lettre-html: default
+  lettre-pdf: default
+  lettre-typst: default
+  lettre-docx: default
+  lettre-odt: default
+  lettre-md: default
+  lettre-plain: default
+---
+
+::: header
+**Les Grands Voisins** --- Association d'intérêt général
+:::
+
+::: from
+{{< meta author >}}
+7 place de l'Église
+92260 Fontenay-aux-Roses
+:::
+
+::: date
+{{< meta place >}}, le {{< meta date >}}
+:::
+
+::: to
+Le développeur Quarto
+À qui de droit
+:::
+
+::: subject
+**{{< meta title >}}**
+:::
+
+::: ref
+réf. {{< meta ref >}}
+:::
+
+::: opening
+Madame, Monsieur,
+:::
+
+::: body
+La présente lettre a pour objet de vous présenter l'extension **Lettre**^[Un format de lettre français pour Quarto.] pour [Quarto](https://quarto.org), qui permet de composer des lettres formelles à partir d'un unique fichier source `.qmd` et de les exporter vers sept formats de sortie.
+
+**Installation**
+
+Copiez le dossier `_extensions/lettre/` à la racine de votre projet. L'extension requiert Quarto 1.9 ou supérieur.
+
+**Structure d'une lettre**
+
+Le contenu est structuré à l'aide de *divs* Quarto :
+
+| Div | Description |
+|:-|:---|
+| `::: header` | En-tête de page (toutes les pages) |
+| `::: from` | Coordonnées de l'expéditeur |
+| `::: date` | Lieu et date d'envoi |
+| `::: to` | Adresse du destinataire |
+| `::: subject` | Objet de la lettre |
+| `::: ref` | Référence du courrier |
+| `::: opening` | Formule d'appel |
+| `::: body` | Corps de la lettre |
+| `::: closing` | Formule de politesse |
+| `::: signature` | Nom et qualité du signataire |
+| `::: footer` | Pied de page (toutes les pages) |
+
+Les métadonnées YAML (`title`, `author`, `ref`, `lang`, `place`, `date`) sont réutilisables dans le document via `{{< meta clé >}}`.
+
+**Formats de sortie**
+
+```yaml
+format:
+  lettre-html: default
+  lettre-pdf: default
+  lettre-typst: default
+  lettre-docx: default
+  lettre-odt: default
+  lettre-md: default
+  lettre-plain: default
+```
+
+**Utilisation**
+
+Copiez `template.qmd` dans votre projet et complétez les champs. Lancez ensuite :
+
+```bash
+quarto render votre-lettre.qmd
+```
+:::
+
+::: closing
+En espérant que cette extension vous sera utile, je reste à votre disposition pour toute question ou suggestion, et vous adresse mes cordiales salutations.
+:::
+
+::: signature
+{{< meta author >}}
+:::
+
+::: footer
+[+33 7 81 81 18 11](tel:+33781811811) --- [chris@lesgrandsvoisins.com](mailto:chris@lesgrandsvoisins.com)
+Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS
+Association d'intérêt général de loi 1901 RNA W751240710 SIREN 832760102
+:::

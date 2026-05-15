@@ -1,0 +1,7 @@
+/.quarto/
+**/*.quarto_ipynb
+/out/
+*_files/
+/lettre-de-documentation-quarto.*
+!/lettre-de-documentation-quarto.qmd
+README.html

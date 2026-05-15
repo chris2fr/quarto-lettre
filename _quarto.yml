@@ -1,0 +1,6 @@
+project:
+  type: default
+  output-dir: _output
+  render:
+    - template.qmd
+    - _extensions/lettre/lettre-de-documentation-quarto.qmd
