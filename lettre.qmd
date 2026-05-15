@@ -20,8 +20,8 @@ format:
 :::
 
 ::: from
-{{< meta author >}}  
-7 place de l'Église  
+{{< meta author >}}\
+7 place de l'Église\
 92260 Fontenay-aux-Roses
 :::
 
@@ -30,7 +30,7 @@ format:
 :::
 
 ::: to
-Le développeur Quarto
+Le développeur Quarto\
 À qui de droit
 :::
 
