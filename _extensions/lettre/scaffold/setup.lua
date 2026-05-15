@@ -33,11 +33,11 @@ local function ask(prompt, default)
   return (input and input ~= "") and input or default or ""
 end
 
-local title  = ask("Objet de la lettre", yaml_get("title"))
+local title  = ask("Objet de la lettre ", yaml_get("title"))
 local author = ask("Auteur (Prénom Nom)", yaml_get("author"))
 local place  = ask("Lieu d'envoi       ", yaml_get("place"))
 local ref    = ask("Référence          ", yaml_get("ref"))
-local date   = os.date("%Y-%m-%d")
+local date   = ask("Date               ", (yaml_get("date") or os.date("%Y-%m-%d")))
 
 local replacements = {
   title  = title,
