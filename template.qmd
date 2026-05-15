@@ -1,10 +1,10 @@
 ---
-title: Test de l'objet
-author: Jean Dupont
-ref: REF-2026-01
-date: 2026-05-15
+title: Objet de la lettre
+author: Prénom Nom
+ref: ref-YYYY-MM-DD
+date: today
 lang: fr
-place: Lyon
+place: Paris
 format:
   lettre-html: default
   lettre-pdf: default
@@ -63,5 +63,5 @@ Veuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées
 
 ::: footer
 Téléphone --- courriel@example.com\
-Adresse -- Code postal Ville
+Adresse --- Code postal Ville
 :::

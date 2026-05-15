@@ -1,7 +1,16 @@
 -- Interactive scaffold — fills in template.qmd from user input.
 -- Usage: lua setup.lua [target.qmd]
 
-local target = (arg and arg[1]) or "template.qmd"
+local function first_qmd()
+  local p = io.popen("ls *.qmd 2>/dev/null | head -1")
+  if p then
+    local name = p:read("*l")
+    p:close()
+    if name and name ~= "" then return name end
+  end
+end
+
+local target = (arg and arg[1]) or first_qmd() or "template.qmd"
 
 local f = io.open(target, "r")
 if not f then
@@ -11,16 +20,23 @@ end
 local content = f:read("*a")
 f:close()
 
-local function ask(prompt)
-  io.write(prompt)
-  io.flush()
-  return io.read()
+local function yaml_get(key)
+  return content:match("\n" .. key .. ": ([^\n]+)") or
+         content:match("^" .. key .. ": ([^\n]+)")
 end
 
-local title  = ask("Objet de la lettre : ")
-local author = ask("Auteur (Prénom Nom) : ")
-local place  = ask("Lieu d'envoi        : ")
-local ref    = ask("Référence           : ")
+local function ask(prompt, default)
+  local hint = default and (" [" .. default .. "]") or ""
+  io.write(prompt .. hint .. " : ")
+  io.flush()
+  local input = io.read()
+  return (input and input ~= "") and input or default or ""
+end
+
+local title  = ask("Objet de la lettre", yaml_get("title"))
+local author = ask("Auteur (Prénom Nom)", yaml_get("author"))
+local place  = ask("Lieu d'envoi       ", yaml_get("place"))
+local ref    = ask("Référence          ", yaml_get("ref"))
 local date   = os.date("%Y-%m-%d")
 
 local replacements = {
