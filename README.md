@@ -10,12 +10,26 @@ A Quarto format extension for composing formal French letters from a single `.qm
 
 ## Installation
 
-Copy the `_extensions/lettre/` folder to the root of your project. Two files are provided:
+```bash
+quarto use template chris2fr/quarto-content
+```
+
+This copies `template.qmd`, `_extensions/lettre/`, and `_quarto.yml` into your project. Two starting files are provided:
 
 | File | Purpose |
 |---|---|
-| `template.qmd` | Blank template — copy and fill in to write your letter |
-| `lettre.qmd` | Working example letter |
+| `template.qmd` | Blank template — fill in to write your letter |
+| `_quarto.yml` | Project config — renders `template.qmd` to `_output/` |
+
+### Interactive scaffold
+
+After installation, run the setup script to fill in the metadata interactively:
+
+```bash
+lua _extensions/lettre/scaffold/setup.lua
+```
+
+It reads the current values from `template.qmd` as defaults and lets you override each field.
 
 ## Usage
 
