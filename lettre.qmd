@@ -1,7 +1,8 @@
 ---
 title: Extension Quarto « Lettre »
 author: Chris Mann
-ref: lettre-2026-05-14-readme
+ref: lettre-2026-05-15-readme
+date: 2026-05-15
 lang: fr
 place: Paris
 format:
@@ -11,6 +12,7 @@ format:
   lettre-docx: default
   lettre-odt: default
   lettre-plain: default
+  lettre-typst: default
 ---
 
 ::: header
@@ -28,7 +30,7 @@ format:
 :::
 
 ::: to
-Le développeur Quarto  
+Le développeur Quarto
 À qui de droit
 :::
 
@@ -45,65 +47,42 @@ Madame, Monsieur,
 :::
 
 ::: body
-La présente lettre a pour objet de vous présenter l'extension **Lettre**^[Un format de lettre français] pour [Quarto](https://quarto.org), qui permet de composer des lettres formelles au format PDF et HTML à partir d'un unique fichier source `.qmd`.
+La présente lettre a pour objet de vous présenter l'extension **Lettre**^[Un format de lettre français] pour [Quarto](https://quarto.org), qui permet de composer des lettres formelles à partir d'un unique fichier source `.qmd` et de les exporter vers sept formats de sortie.
 
 **Installation**
 
-Placez le dossier `_extensions/lettre/` à la racine de votre projet. L'extension requiert Quarto 1.9 ou supérieur.
+Copiez le dossier `_extensions/lettre/` à la racine de votre projet. L'extension requiert Quarto 1.9 ou supérieur.
 
 **Structure d'une lettre**
 
 Le contenu est structuré à l'aide de *divs* Quarto, chacun correspondant à une partie conventionnelle de la lettre :
 
-`::: from`
-: Coordonnées de l'expéditeur
+| Div | Description |
+|:-|:---|
+| `::: header` | En-tête de page (imprimé sur toutes les pages) |
+| `::: from` | Coordonnées de l'expéditeur |
+| `::: date` | Lieu et date d'envoi |
+| `::: to` | Adresse du destinataire |
+| `::: subject` | Objet de la lettre |
+| `::: ref` | Référence du courrier |
+| `::: opening` | Formule d'appel |
+| `::: body` | Corps de la lettre |
+| `::: closing` | Formule de politesse |
+| `::: signature` | Nom et qualité du signataire |
+| `::: footer` | Pied de page (imprimé sur toutes les pages) |
 
-`::: date`
-: Lieu et date d'envoi
+Les divs `header` et `footer` alimentent l'en-tête et le pied de page du document imprimé ; ils ne font pas partie du corps de la lettre.
 
-`::: to`
-: Adresse du destinataire
+**Métadonnées YAML**
 
-`::: ref`
-: Référence du courrier (petit, aligné à droite)
-
-`::: subject`
-: Objet de la lettre
-
-`::: opening`
-: Formule d'appel (ex. « Madame, »)
-
-`::: body`
-: Corps de la lettre
-
-`::: closing`
-: Formule de politesse
-
-`::: signature`
-: Nom et qualité du signataire
-
-**En-tête YAML**
-
-Les métadonnées suivantes sont reconnues par l'extension :
-
-`title`
-: objet de la lettre, réutilisable via `\{\{< meta title >\}\}`
-
-`author`
-: nom de l'expéditeur, réutilisable via `\{\{< meta author >\}\}`
-
-`ref`
-: référence interne du courrier
-
-`lang`
-: langue du document (`fr`, `en`, `ar`…)
-
-`place`
-: lieu d'envoi, à insérer dans le div `date`
-
-`date`
-: date du document ; vaut `today` par défaut
-
+| Clé | Description |
+|:-|:---|
+| `title` | Objet de la lettre — réutilisable via `\{\{< meta title >\}\}` |
+| `author` | Nom de l'expéditeur — réutilisable via `\{\{< meta author >\}\}` |
+| `ref` | Référence interne du courrier |
+| `lang` | Langue du document (`fr`, `en`, `ar`…) |
+| `place` | Lieu d'envoi |
+| `date` | Date du document ; vaut `today` par défaut |
 
 **Formats de sortie**
 
@@ -113,13 +92,26 @@ Déclarez dans le YAML les formats souhaités :
 format:
   lettre-html: default
   lettre-pdf: default
+  lettre-typst: default
+  lettre-docx: default
+  lettre-odt: default
+  lettre-md: default
+  lettre-plain: default
 ```
 
-Le format PDF repose sur LaTeX (classe `article`, police *Libertinus*). Le format HTML utilise une mise en page CSS Grid qui reproduit la disposition d'une lettre A4.
+| Format | Description |
+|:-|:---|
+| `lettre-html` | Page HTML avec mise en page CSS Grid |
+| `lettre-pdf` | PDF via LaTeX (Libertinus, A4) |
+| `lettre-typst` | PDF via Typst (A4) |
+| `lettre-docx` | Document Word avec styles de paragraphe dédiés |
+| `lettre-odt` | Document OpenDocument avec styles dédiés |
+| `lettre-md` | Markdown GitHub Flavored |
+| `lettre-plain` | Texte brut |
 
 **Notes de bas de page**
 
-Les notes sont prises en charge dans les deux formats^[Comme celle-ci, insérée avec la syntaxe `^[…]`.].
+Les notes sont prises en charge dans tous les formats^[Comme celle-ci, insérée avec la syntaxe `^[…]`.].
 :::
 
 ::: closing
@@ -131,8 +123,7 @@ En espérant que cette extension vous sera utile, je reste à votre disposition 
 :::
 
 ::: footer
-[+33 7 81 81 18 11](tel:+33781811811) --- [chris@lesgrandsvoisins.com](mailto:chris@lesgrandsvoisins.com)  
-Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS  
+[+33 7 81 81 18 11](tel:+33781811811) --- [chris@lesgrandsvoisins.com](mailto:chris@lesgrandsvoisins.com)
+Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS
 Association d'intérêt général de loi 1901 RNA W751240710 SIREN 832760102
 :::
-

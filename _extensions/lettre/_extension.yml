@@ -21,6 +21,17 @@ contributes:
       filters:
         - _filters/page.lua
         - _filters/validate.lua
+    typst:
+      template-partials:
+        - typst/_partials/typst-template.typ
+        - typst/_partials/typst-show.typ
+      papersize: a4
+      keep-typ: true
+      toc: false
+      filters:
+        - _filters/page.lua
+        - _filters/validate.lua
+        - typst/_filters/divs.lua
     # epub:
     #   filters:
     #     - _filters/page.lua

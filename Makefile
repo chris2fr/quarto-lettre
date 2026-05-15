@@ -15,6 +15,10 @@ pdf:
 	quarto render lettre.qmd --output-dir $(outdir)/pdf --to lettre-pdf
 	mv lettre.tex $(outdir)/pdf/lettre.tex
 
+typst:
+	quarto render lettre.qmd --output-dir $(outdir)/typst --to lettre-typst
+	mv lettre.typ $(outdir)/typst/lettre.typ
+
 md:
 	quarto render lettre.qmd --output-dir $(outdir)/md --to lettre-md
 
@@ -26,3 +30,6 @@ odt:
 
 plain:
 	quarto render lettre.qmd --output-dir $(outdir)/plain --to lettre-plain
+
+preview:
+	quarto preview lettre.qmd 

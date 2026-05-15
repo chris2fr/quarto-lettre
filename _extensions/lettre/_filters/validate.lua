@@ -1,4 +1,4 @@
-local required_meta = { 'title', 'author', 'lang' }
+local required_meta = { 'title', 'author', 'lang', 'date' }
 local required_divs = { 'from', 'date', 'to', 'subject', 'opening', 'body', 'closing', 'signature' }
 local seen = {}
 
