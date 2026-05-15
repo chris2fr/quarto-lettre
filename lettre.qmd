@@ -51,28 +51,55 @@ Placez le dossier `_extensions/lettre/` à la racine de votre projet. L'extensio
 
 Le contenu est structuré à l'aide de *divs* Quarto, chacun correspondant à une partie conventionnelle de la lettre :
 
-| Div            | Rôle                                           |
-|----------------|------------------------------------------------|
-| `::: from`     | Coordonnées de l'expéditeur                    |
-| `::: date`     | Lieu et date d'envoi                           |
-| `::: to`       | Adresse du destinataire                        |
-| `::: ref`      | Référence du courrier (petit, aligné à droite) |
-| `::: subject`  | Objet de la lettre                             |
-| `::: opening`  | Formule d'appel (ex. « Madame, »)              |
-| `::: body`     | Corps de la lettre                             |
-| `::: closing`  | Formule de politesse                           |
-| `::: signature`| Nom et qualité du signataire                   |
+`::: from`
+: Coordonnées de l'expéditeur
+
+`::: date`
+: Lieu et date d'envoi
+
+`::: to`
+: Adresse du destinataire
+
+`::: ref`
+: Référence du courrier (petit, aligné à droite)
+
+`::: subject`
+: Objet de la lettre
+
+`::: opening`
+: Formule d'appel (ex. « Madame, »)
+
+`::: body`
+: Corps de la lettre
+
+`::: closing`
+: Formule de politesse
+
+`::: signature`
+: Nom et qualité du signataire
 
 **En-tête YAML**
 
 Les métadonnées suivantes sont reconnues par l'extension :
 
-- `title` — objet de la lettre, réutilisable via `{{< meta title >}}`
-- `author` — nom de l'expéditeur, réutilisable via `{{< meta author >}}`
-- `ref` — référence interne du courrier
-- `lang` — langue du document (`fr`, `en`, `ar`…)
-- `place` — lieu d'envoi, à insérer dans le div `date`
-- `date` — date du document ; vaut `today` par défaut
+`title`
+: objet de la lettre, réutilisable via `\{\{< meta title >\}\}`
+
+`author`
+: nom de l'expéditeur, réutilisable via `\{\{< meta author >\}\}`
+
+`ref`
+: référence interne du courrier
+
+`lang`
+: langue du document (`fr`, `en`, `ar`…)
+
+`place`
+: lieu d'envoi, à insérer dans le div `date`
+
+`date`
+: date du document ; vaut `today` par défaut
+
 
 **Formats de sortie**
 
