@@ -1,0 +1,13 @@
+$if(page-header)$
+$page-header$
+
+---
+
+$endif$
+$body$
+$if(page-footer)$
+
+---
+
+$page-footer$
+$endif$

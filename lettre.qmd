@@ -9,6 +9,7 @@ format:
   lettre-pdf: default
   lettre-docx: default
   lettre-odt: default
+  lettre-md: default
 ---
 
 ::: header

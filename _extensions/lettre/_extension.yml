@@ -21,6 +21,17 @@ contributes:
       filters:
         - _filters/page.lua
         - _filters/validate.lua
+    # epub:
+    #   filters:
+    #     - _filters/page.lua
+    #     - _filters/validate.lua
+    md:
+      format: gfm
+      toc: false
+      template: md/layout.md
+      filters:
+        - _filters/page.lua
+        - _filters/validate.lua
     docx:
       reference-doc: docx/reference.docx
       toc: false
