@@ -5,9 +5,9 @@
 out/
 *_files/
 /template.*
-/lettre.*
+/lettre-de-documentation-quarto.*
 !/template.qmd
-!/lettre.qmd
+!/lettre-de-documentation-quarto.qmd
 README.html
 public/
 /.~*
