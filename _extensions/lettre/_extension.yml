@@ -22,10 +22,18 @@ contributes:
         - _filters/page.lua
         - _filters/validate.lua
     docx:
-      reference-doc: word/reference.docx
+      reference-doc: docx/reference.docx
+      toc: false
       filters:
         - _filters/page.lua
         - _filters/validate.lua
+        - docx/_filters/divs.lua
+    odt:
+      reference-doc: odt/reference.odt
+      filters:
+        - _filters/page.lua
+        - _filters/validate.lua
+        - docx/_filters/divs.lua
     pdf:
       template: pdf/layout.tex
       papersize: a4

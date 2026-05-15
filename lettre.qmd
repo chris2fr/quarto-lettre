@@ -8,6 +8,7 @@ format:
   lettre-html: default
   lettre-pdf: default
   lettre-docx: default
+  lettre-odt: default
 ---
 
 ::: header
