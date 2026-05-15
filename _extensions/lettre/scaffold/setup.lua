@@ -59,5 +59,20 @@ local out = io.open(target, "w")
 out:write(table.concat(result, "\n") .. "\n")
 out:close()
 
+-- Update _quarto.yml render list to point to target
+local quarto_yml = "_quarto.yml"
+local yml_file = io.open(quarto_yml, "r")
+if yml_file then
+  local yml_content = yml_file:read("*a")
+  yml_file:close()
+  local updated = yml_content:gsub("(    %- )([^\n]+%.qmd)", "%1" .. target)
+  if updated ~= yml_content then
+    local yml_out = io.open(quarto_yml, "w")
+    yml_out:write(updated)
+    yml_out:close()
+    print("_quarto.yml updated — render target: " .. target)
+  end
+end
+
 print("\n" .. target .. " updated. Edit the letter body, then:")
 print("  quarto render " .. target)
