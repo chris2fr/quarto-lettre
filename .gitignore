@@ -5,7 +5,9 @@
 out/
 *_files/
 /template.*
+/lettre.*
 !/template.qmd
+!/lettre.qmd
 README.html
 public/
 /.~*

@@ -16,12 +16,13 @@ format:
 ---
 
 ::: header
-**Les Grands Voisins** --- Association d'intérêt général
+**Les Grands Voisins**\
+Association d'intérêt général
 :::
 
 ::: from
-{{< meta author >}}
-7 place de l'Église
+{{< meta author >}}\
+7 place de l'Église\
 92260 Fontenay-aux-Roses
 :::
 
@@ -30,9 +31,9 @@ format:
 :::
 
 ::: to
-Madame la Directrice
-Médiathèque de Fontenay-aux-Roses
-2 rue Boucicaut
+Madame la Directrice\
+Médiathèque de Fontenay-aux-Roses\
+2 rue Boucicaut\
 92260 Fontenay-aux-Roses
 :::
 
@@ -66,7 +67,7 @@ Président, Les Grands Voisins
 :::
 
 ::: footer
-[+33 7 81 81 18 11](tel:+33781811811) --- [chris@lesgrandsvoisins.com](mailto:chris@lesgrandsvoisins.com)
-Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS
+[+33 7 81 81 18 11](tel:+33781811811) --- [chris@lesgrandsvoisins.com](mailto:chris@lesgrandsvoisins.com)\
+Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS\
 Association d'intérêt général de loi 1901 RNA W751240710 SIREN 832760102
 :::
