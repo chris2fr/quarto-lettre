@@ -77,7 +77,7 @@ All letter divs are required. The filter raises an error if any are missing.
 ## Render
 
 ```bash
-quarto render lettre.qmd
+quarto render template.qmd
 ```
 
 ## Extension structure

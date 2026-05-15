@@ -1,0 +1,67 @@
+---
+title: Objet de la lettre
+author: Prénom Nom
+ref: ref-YYYY-MM-DD
+date: today
+lang: fr
+place: Paris
+format:
+  lettre-html: default
+  lettre-pdf: default
+  lettre-typst: default
+  lettre-docx: default
+  lettre-odt: default
+  lettre-md: default
+  lettre-plain: default
+---
+
+::: header
+**Organisation**\
+Description courte
+:::
+
+::: from
+{{< meta author >}}\
+Rue et numéro\
+Code postal Ville
+:::
+
+::: date
+{{< meta place >}}, le {{< meta date >}}
+:::
+
+::: to
+Destinataire\
+Organisation\
+Rue et numéro\
+Code postal Ville
+:::
+
+::: subject
+**{{< meta title >}}**
+:::
+
+::: ref
+réf. {{< meta ref >}}
+:::
+
+::: opening
+Madame, Monsieur,
+:::
+
+::: body
+Corps de la lettre.
+:::
+
+::: closing
+Veuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.
+:::
+
+::: signature
+{{< meta author >}}
+:::
+
+::: footer
+Téléphone --- courriel@example.com\
+Adresse -- Code postal Ville
+:::

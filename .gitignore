@@ -4,8 +4,10 @@
 /.luarc.json
 out/
 *_files/
-/lettre.*
-!/lettre.qmd
+/template.*
+!/template.qmd
 README.html
 public/
 /.~*
+
+/.claude

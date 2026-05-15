@@ -1,6 +1,6 @@
 title: Lettre
 author: Chris Mann
-version: 1.0.0
+version: 0.1.0
 quarto-required: ">=1.9.0"
 contributes:
   formats:
@@ -11,6 +11,7 @@ contributes:
       date-format: long
       date: today
     html:
+      base-format: html
       page-layout: custom
       template: html/layout.html
       theme: none
@@ -22,6 +23,7 @@ contributes:
         - _filters/page.lua
         - _filters/validate.lua
     typst:
+      base-format: typ
       template-partials:
         - typst/_partials/typst-template.typ
         - typst/_partials/typst-show.typ
@@ -32,16 +34,14 @@ contributes:
         - _filters/page.lua
         - _filters/validate.lua
         - typst/_filters/divs.lua
-    # epub:
-    #   filters:
-    #     - _filters/page.lua
-    #     - _filters/validate.lua
     plain:
+      base-format: plain
       template: plain/layout.txt
       filters:
         - _filters/page.lua
         - _filters/validate.lua
     md:
+      base-format: md
       format: gfm
       toc: false
       template: md/layout.md
@@ -49,6 +49,7 @@ contributes:
         - _filters/page.lua
         - _filters/validate.lua
     docx:
+      base-format: docx
       reference-doc: docx/reference.docx
       toc: false
       filters:
@@ -56,12 +57,14 @@ contributes:
         - _filters/validate.lua
         - docx/_filters/divs.lua
     odt:
+      base-format: odt
       reference-doc: odt/reference.odt
       filters:
         - _filters/page.lua
         - _filters/validate.lua
         - docx/_filters/divs.lua
     pdf:
+      base-format: pdf
       template: pdf/layout.tex
       papersize: a4
       toc: false
