@@ -76,6 +76,7 @@ if yml_file then
   local yml_content = yml_file:read("*a")
   yml_file:close()
   local updated = yml_content:gsub("(    %- )([^\n]+%.qmd)", "%1" .. target)
+  updated = updated:gsub("%s*pre%-render:[^\n]*\n", "\n")
   if updated ~= yml_content then
     local yml_out = io.open(quarto_yml, "w")
     yml_out:write(updated)
