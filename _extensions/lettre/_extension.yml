@@ -28,7 +28,7 @@ contributes:
         - typst/_partials/typst-template.typ
         - typst/_partials/typst-show.typ
       papersize: a4
-      keep-typ: true
+      keep-typ: false
       toc: false
       filters:
         - _filters/page.lua
