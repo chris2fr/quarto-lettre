@@ -30,6 +30,7 @@ contributes:
       papersize: a4
       keep-typ: false
       toc: false
+      output-file: typst.pdf
       filters:
         - _filters/page.lua
         - _filters/validate.lua
@@ -70,7 +71,7 @@ contributes:
       toc: false
       lof: false
       lot: false
-      keep-tex: true
+      keep-tex: false
       include-in-header: pdf/_partials/header.tex
       include-before-body: pdf/_partials/body-before.tex
       include-after-body: pdf/_partials/body-after.tex
