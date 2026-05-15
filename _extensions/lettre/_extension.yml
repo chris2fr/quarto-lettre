@@ -41,13 +41,13 @@ contributes:
         - _filters/page.lua
         - _filters/validate.lua
     md:
-      base-format: md
-      format: gfm
+      base-format: markdown
       toc: false
       template: md/layout.md
       filters:
         - _filters/page.lua
         - _filters/validate.lua
+        - md/_filters/tables.lua
     docx:
       base-format: docx
       reference-doc: docx/reference.docx
