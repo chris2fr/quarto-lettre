@@ -25,6 +25,16 @@ local function yaml_get(key)
          content:match("^" .. key .. ": ([^\n]+)")
 end
 
+local function yaml_get_date(key)
+  local date_str = yaml_get(key)
+  if date_str then
+    local y, m, d = date_str:match("(%d%d%d%d)-(%d%d)-(%d%d)")
+    if y and m and d then
+      return string.format("%04d-%02d-%02d", tonumber(y), tonumber(m), tonumber(d))
+    end
+  end
+end
+
 local function ask(prompt, default)
   local hint = default and (" [" .. default .. "]") or ""
   io.write(prompt .. hint .. " : ")
@@ -37,7 +47,7 @@ local title  = ask("Objet de la lettre ", yaml_get("title"))
 local author = ask("Auteur (Prénom Nom)", yaml_get("author"))
 local place  = ask("Lieu d'envoi       ", yaml_get("place"))
 local ref    = ask("Référence          ", yaml_get("ref"))
-local date   = ask("Date               ", (yaml_get("date") or os.date("%Y-%m-%d")))
+local date   = ask("Date  (1789-07-14) ", (yaml_get_date("date") or os.date("%Y-%m-%d")))
 
 local replacements = {
   title  = title,
