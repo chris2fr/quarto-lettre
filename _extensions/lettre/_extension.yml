@@ -3,9 +3,6 @@ author: Chris Mann
 version: 1.0.0
 quarto-required: ">=1.9.0"
 contributes:
-  filters:
-    - _filters/page.lua
-    - _filters/validate.lua
   formats:
     common:
       variables:
@@ -18,9 +15,12 @@ contributes:
       template: html/layout.html
       theme: none
       minipal: true
-      css: 
+      css:
         - html/css/styles.css
         - html/css/boilerplate.css
+      filters:
+        - _filters/page.lua
+        - _filters/validate.lua
     pdf:
       template: pdf/layout.tex
       papersize: a4
@@ -32,4 +32,6 @@ contributes:
       include-before-body: pdf/_partials/body-before.tex
       include-after-body: pdf/_partials/body-after.tex
       filters:
-        - pdf/_filters/divs.lua 
+        - _filters/page.lua
+        - _filters/validate.lua
+        - pdf/_filters/divs.lua

@@ -21,7 +21,6 @@ body {
 
 .from {
   grid-area: from;
-  text-align: center;
 }
 
 .date {

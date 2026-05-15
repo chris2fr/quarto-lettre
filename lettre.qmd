@@ -9,10 +9,13 @@ format:
   lettre-pdf: default
 ---
 
+::: header
+**Les Grands Voisins** --- Association d'intérêt général
+:::
 
 ::: from
-{{< meta author >}}
-7 place de l'Église
+{{< meta author >}}  
+7 place de l'Église  
 92260 Fontenay-aux-Roses
 :::
 
@@ -21,7 +24,7 @@ format:
 :::
 
 ::: to
-Le développeur Quarto
+Le développeur Quarto  
 À qui de droit
 :::
 
@@ -38,7 +41,7 @@ Madame, Monsieur,
 :::
 
 ::: body
-La présente lettre a pour objet de vous présenter l'extension **Lettre** pour [Quarto](https://quarto.org), qui permet de composer des lettres formelles au format PDF et HTML à partir d'un unique fichier source `.qmd`.
+La présente lettre a pour objet de vous présenter l'extension **Lettre**^[Un format de lettre français] pour [Quarto](https://quarto.org), qui permet de composer des lettres formelles au format PDF et HTML à partir d'un unique fichier source `.qmd`.
 
 **Installation**
 
@@ -96,4 +99,9 @@ En espérant que cette extension vous sera utile, je reste à votre disposition 
 {{< meta author >}}
 :::
 
+::: footer
+[+33 7 81 81 18 11](tel:+33781811811) --- [chris@lesgrandsvoisins.com](mailto:chris@lesgrandsvoisins.com)  
+Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS  
+Association d'intérêt général de loi 1901 RNA W751240710 SIREN 832760102
+:::
 

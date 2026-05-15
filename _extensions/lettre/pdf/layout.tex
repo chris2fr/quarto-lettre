@@ -39,8 +39,7 @@
 \renewcommand{\headrulewidth}{0pt}
 
 \fancyhead[C]{\small $if(page-header)$$page-header$$endif$}
-\fancyfoot[C]{\small $if(page-footer)$$page-footer$$endif$}
-\fancyfoot[R]{\thepage}
+\fancyfoot[C]{\small \ifnum\value{page}>1 \thepage\\ \fi $if(page-footer)$$page-footer$$endif$}
 
 
 \usepackage[sorting=none]{biblatex}
@@ -62,9 +61,7 @@
 }
 
 \newenvironment{div-from}{
-  \begin{center}
 }{
-  \end{center}
   \vspace{1em}
 }
 

@@ -1,15 +1,19 @@
-local function inject(meta, filename, key)
-  local f = io.open(filename, 'r')
-  if not f then return end
-  local content = f:read('*all')
-  f:close()
-  local fmt = FORMAT:match('html') and 'html' or FORMAT
-  local rendered = pandoc.write(pandoc.read(content, 'markdown'), fmt):gsub('\n$', '')
-  meta[key] = pandoc.MetaBlocks({ pandoc.RawBlock(fmt, rendered) })
+local extracted = {}
+
+function Div(el)
+  for _, class in ipairs({ 'header', 'footer' }) do
+    if el.classes:includes(class) then
+      local fmt = FORMAT:match('html') and 'html' or FORMAT
+      local rendered = pandoc.write(pandoc.Pandoc(el.content), fmt):gsub('\n$', '')
+      extracted['page-' .. class] = pandoc.MetaBlocks({ pandoc.RawBlock(fmt, rendered) })
+      return {}
+    end
+  end
 end
 
-function Meta(meta)
-  inject(meta, '_header.qmd', 'page-header')
-  inject(meta, '_footer.qmd', 'page-footer')
-  return meta
+function Pandoc(doc)
+  for key, value in pairs(extracted) do
+    doc.meta[key] = value
+  end
+  return doc
 end
