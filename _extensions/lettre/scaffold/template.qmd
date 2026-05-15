@@ -1,0 +1,36 @@
+---
+title: "{{subject}}"
+author: "{{author}}"
+date: today
+place: "{{place}}"
+lang: fr
+format:
+  lettre-html: default
+  lettre-pdf: default
+  lettre-typst: default
+---
+
+::: from
+{{author}}
+:::
+
+::: to
+{{to_name}}
+{{to_addr}}
+:::
+
+::: opening
+Madame, Monsieur,
+:::
+
+::: body
+Veuillez trouver ci-joint ...
+:::
+
+::: closing
+Veuillez agréer mes salutations distinguées,
+:::
+
+::: signature
+{{author}}
+:::
