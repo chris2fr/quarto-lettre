@@ -10,6 +10,7 @@ format:
   lettre-md: default
   lettre-docx: default
   lettre-odt: default
+  lettre-plain: default
 ---
 
 ::: header
