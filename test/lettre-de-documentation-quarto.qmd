@@ -71,7 +71,7 @@ Le contenu est structuré à l'aide de *divs* Quarto :
 | `::: signature` | Nom et qualité du signataire |
 | `::: footer` | Pied de page (toutes les pages) |
 
-Les métadonnées YAML (`title`, `author`, `ref`, `lang`, `place`, `date`) sont réutilisables dans le document via `{{< meta clé >}}`.
+Les métadonnées YAML (`title`, `author`, `ref`, `lang`, `place`, `date`) sont réutilisables dans le document via `{{{< meta clé >}}}`.
 
 **Formats de sortie**
 
