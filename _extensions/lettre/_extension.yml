@@ -4,7 +4,8 @@ version: 1.0.0
 quarto-required: ">=1.9.0"
 contributes:
   filters:
-    - _filters/divs.lua
+    - _filters/page.lua
+    - _filters/validate.lua
   formats:
     common:
       variables:
@@ -14,21 +15,21 @@ contributes:
       date: today
     html:
       page-layout: custom
-      template: layout.html
+      template: html/layout.html
       theme: none
       minipal: true
       css: 
-        - static/css/styles.css
-        - static/css/boilerplate.css
+        - html/css/styles.css
+        - html/css/boilerplate.css
     pdf:
-      template: layout.tex
+      template: pdf/layout.tex
       papersize: a4
       toc: false
       lof: false
       lot: false
       keep-tex: true
-      include-in-header: _partials/header.tex
-      include-before-body: _partials/body-before.tex
-      include-after-body: _partials/body-after.tex
+      include-in-header: pdf/_partials/header.tex
+      include-before-body: pdf/_partials/body-before.tex
+      include-after-body: pdf/_partials/body-after.tex
       filters:
-        - _filters/divs.lua
+        - pdf/_filters/divs.lua 

@@ -9,19 +9,19 @@ format:
   lettre-pdf: default
 ---
 
+
 ::: from
-{{< meta author >}}  
-7 place de l'Église  
+{{< meta author >}}
+7 place de l'Église
 92260 Fontenay-aux-Roses
 :::
-
 
 ::: date
 {{< meta place >}}, le {{< meta date >}}
 :::
 
 ::: to
-Le développeur Quarto  
+Le développeur Quarto
 À qui de droit
 :::
 
@@ -95,3 +95,5 @@ En espérant que cette extension vous sera utile, je reste à votre disposition 
 ::: signature
 {{< meta author >}}
 :::
+
+

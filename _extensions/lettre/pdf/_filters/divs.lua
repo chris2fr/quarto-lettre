@@ -11,10 +11,8 @@ local env_for_class = {
 }
 
 local function wrap_div(el, env)
-  if quarto.doc.is_format('pdf') then
     table.insert(el.content, 1, pandoc.RawBlock('latex', '\\begin{' .. env .. '}'))
     table.insert(el.content, pandoc.RawBlock('latex', '\\end{' .. env .. '}'))
-  end
   return el
 end
 

@@ -3,6 +3,8 @@
 
 /.luarc.json
 out/
-/lettre_files/
+*_files/
 /lettre.*
 !/lettre.qmd
+README.html
+public/

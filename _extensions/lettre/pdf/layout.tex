@@ -38,8 +38,9 @@
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{0pt}
 
-\fancyhead{}
-\fancyfoot[C]{\thepage\\{\footnotesize \href{tel:+33781811811}{+33 7 81 81 18 11} --- \href{mailto:chris@lesgrandsvoisins.com}{chris@lesgrandsvoisins.com}} --- {\footnotesize Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS Association d'intérêt général de loi 1901 RNA W751240710 SIREN 832760102}}
+\fancyhead[C]{\small $if(page-header)$$page-header$$endif$}
+\fancyfoot[C]{\small $if(page-footer)$$page-footer$$endif$}
+\fancyfoot[R]{\thepage}
 
 
 \usepackage[sorting=none]{biblatex}

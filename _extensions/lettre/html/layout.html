@@ -30,10 +30,16 @@
 </head>
 
 <body>
+  $if(page-header)$
+  <header class="page-header">$page-header$</header>
+  $endif$
   <div class="lettre">
     <p class="subject-label">$labels.subject$ :</p>
     $body$
   </div>
+  $if(page-footer)$
+  <footer class="page-footer">$page-footer$</footer>
+  $endif$
 </body>
 
 </html>
