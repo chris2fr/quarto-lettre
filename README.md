@@ -10,7 +10,12 @@ A Quarto format extension for composing formal French letters from a single `.qm
 
 ## Installation
 
-Copy the `_extensions/lettre/` folder to the root of your project.
+Copy the `_extensions/lettre/` folder to the root of your project. Two files are provided:
+
+| File | Purpose |
+|---|---|
+| `template.qmd` | Blank template — copy and fill in to write your letter |
+| `lettre.qmd` | Working example letter |
 
 ## Usage
 
@@ -77,6 +82,10 @@ All letter divs are required. The filter raises an error if any are missing.
 ## Render
 
 ```bash
+# Render the example letter
+quarto render lettre.qmd
+
+# Render your own letter
 quarto render template.qmd
 ```
 
