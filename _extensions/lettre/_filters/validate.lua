@@ -1,7 +1,13 @@
+-- Required YAML front-matter keys
 local required_meta = { 'title', 'author', 'lang', 'date' }
+
+-- Required named divs that the letter document must contain
 local required_divs = { 'from', 'date', 'to', 'subject', 'opening', 'body', 'closing', 'signature' }
+
+-- Tracks which required divs have been found during traversal
 local seen = {}
 
+-- Walk every Div in the document and mark required ones as seen
 function Div(el)
   for _, class in ipairs(required_divs) do
     if el.classes:includes(class) then
@@ -11,6 +17,7 @@ function Div(el)
 end
 
 function Pandoc(doc)
+  -- Keep only top-level Div blocks; other block types are not valid in a lettre document
   local blocks = {}
   for _, block in ipairs(doc.blocks) do
     if block.t == 'Div' then
@@ -19,6 +26,7 @@ function Pandoc(doc)
   end
   doc.blocks = blocks
 
+  -- Validate metadata
   local missing = {}
   for _, key in ipairs(required_meta) do
     if not doc.meta[key] then
@@ -29,6 +37,7 @@ function Pandoc(doc)
     error('Lettre: missing required metadata: ' .. table.concat(missing, ', '))
   end
 
+  -- Validate required divs (populated by the Div walker above)
   for _, class in ipairs(required_divs) do
     if not seen[class] then
       table.insert(missing, '::: ' .. class .. ' :::')

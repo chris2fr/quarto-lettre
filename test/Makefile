@@ -1,36 +1,36 @@
 outdir = ./out
+inputfilebase = noheadfoot
 
 all:
-	make html
-	make plain
-	make md
-	make pdf
-	make odt
-	make typst
-	make docx
+	quarto render
+# 	make html
+# 	make plain
+# 	make md
+# 	make pdf
+# 	make odt
+# 	make typst
+# 	make docx
 
 html:
-	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/html --to lettre-html
+	quarto render $(inputfilebase).qmd --output $(inputfilebase).html --output-dir $(outdir) --to lettre-html
 
 pdf:
-	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/pdf --to lettre-pdf
-	mv lettre-de-documentation-quarto.tex $(outdir)/pdf/
+	quarto render $(inputfilebase).qmd --output $(inputfilebase).pdf --output-dir $(outdir) --to lettre-pdf
 
 typst:
-	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/typst --to lettre-typst
-	mv lettre-de-documentation-quarto.typ $(outdir)/typst/
+	quarto render $(inputfilebase).qmd --output $(inputfilebase).typst.pdf --output-dir $(outdir) --to lettre-typst
 
 md:
-	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/md --to lettre-md
+	quarto render $(inputfilebase).qmd --output $(inputfilebase).md --output-dir $(outdir) --to lettre-md
 
 docx:
-	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/docx --to lettre-docx
+	quarto render $(inputfilebase).qmd --output $(inputfilebase).docx --output-dir $(outdir) --to lettre-docx
 
 odt:
-	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/odt --to lettre-odt
+	quarto render $(inputfilebase).qmd --output $(inputfilebase).odt --output-dir $(outdir) --to lettre-odt
 
 plain:
-	quarto render lettre-de-documentation-quarto.qmd --output-dir $(outdir)/plain --to lettre-plain
+	quarto render $(inputfilebase).qmd --output $(inputfilebase).plain --output-dir $(outdir) --to lettre-plain
 
 preview:
-	quarto preview lettre-de-documentation-quarto.qmd
+	quarto preview $(inputfilebase)

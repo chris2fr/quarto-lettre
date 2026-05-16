@@ -1,4 +1,3 @@
 project:
   type: default
-  render:
-    - lettre-de-documentation-quarto.qmd
+  output-dir: _output
