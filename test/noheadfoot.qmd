@@ -48,7 +48,7 @@ Madame, Monsieur,
 :::
 
 ::: body
-La présente lettre a pour objet de vous présenter l'extension **Lettre**^[Un format de lettre français pour Quarto.] pour [Quarto](https://quarto.org), qui permet de composer des lettres formelles à partir d'un unique fichier source `.qmd` et de les exporter vers sept formats de sortie.
+La présente lettre a pour objet de vous présenter l'extension **Lettre**^[Un format de lettre français pour Quarto.] pour [Quarto](https://quarto.org), qui permet de composer des lettres formelles à partir d'un unique fichier source `.qmd` et de les exporter[@otherthing]  vers sept formats de sortie.
 
 **Installation**
 

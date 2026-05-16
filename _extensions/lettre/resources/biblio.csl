@@ -57,6 +57,9 @@
   <macro name="language">
     <text variable="LANGUAGE"/>
   </macro>
+  <macro name="edition">
+    <text variable="EDITION"/>
+  </macro>
   <macro name="recipient">
     <text variable="RECIPIENT"/>
   </macro>
@@ -273,7 +276,7 @@
       <key variable="citation-number"/>
     </sort>
     <layout>
-      <text variable="citation-number" display="left-margin" suffix=". "/>
+      <text variable="citation-number" display="left-margin" prefix="(" suffix="). "/>
         <group display="right-inline">
             <text macro="responsability" suffix=". "/>
             <text macro="title" suffix=". "/>
@@ -281,9 +284,9 @@
             <text macro="date" suffix=". "/>
             <text macro="number" prefix="[" suffix="]. "/>
             <text macro="language" suffix=". "/>
-            <text macro="publisher-group" suffix=". "/>
             <text macro="page" suffix=". "/>
             <text macro="genre" suffix=". "/>
+            <text macro="publisher-group" suffix=". "/>
             <text macro="recipient" suffix=". "/>
             <text macro="edition" suffix=". "/>
             <text macro="issue" suffix=". "/>
