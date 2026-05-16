@@ -48,6 +48,9 @@ contributes:
       base-format: markdown
       toc: false
       template: md/layout.md
+      wrap: none
+      tabstop: 2
+      preserve-tabs: false
       filters:
         - _filters/page.lua
         - _filters/validate.lua
