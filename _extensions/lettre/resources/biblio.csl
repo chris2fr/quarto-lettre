@@ -57,8 +57,8 @@
   <macro name="language">
     <text variable="language"/>
   </macro>
-  <macro name="recipient">
-    <names variable="recipient">
+  <macro name="translator">
+    <names variable="translator">
       <name and="text" name-as-sort-order="all" sort-separator=", " delimiter=", " delimiter-precedes-last="never">
         <name-part name="family" text-case="uppercase"/>
         <name-part name="given"/>
@@ -130,18 +130,18 @@
   </macro>
   <macro name="title">
     <text variable="title" font-style="italic" suffix="."/>
-    <choose>
+    <!-- <choose>
       <if variable="URL">
         <text term="online" prefix=" [" suffix="]"/>
       </if>
-    </choose>
+    </choose> -->
   </macro>
   <macro name="medium">
     <text variable="medium" prefix=" [" suffix="]"/>
   </macro>
-  <macro name="type">
+  <!-- <macro name="type">
     <text variable="type" prefix=" [" suffix="]"/>
-  </macro>
+  </macro> -->
   <macro name="genre">
     <text variable="genre" prefix="[" suffix="]"/>
   </macro>
@@ -219,6 +219,12 @@
   <macro name="isbn">
     <text variable="ISBN" prefix="ISBN&#160;"/>
   </macro>
+  <macro name="keyword">
+    <text variable="keyword"/>
+  </macro>
+  <macro name="annote">
+    <text variable="annote"/>
+  </macro>
   <macro name="doi">
     <text variable="DOI" prefix="DOI&#160;"/>
   </macro>
@@ -282,21 +288,23 @@
         <group display="right-inline">
             <text macro="responsability" suffix=". "/>
             <text macro="title" suffix=". "/>
-            <text macro="type" suffix=". "/>
             <text macro="date" suffix=". "/>
             <text macro="number" prefix="[" suffix="]. "/>
             <text macro="language" suffix=". "/>
             <text macro="page" suffix=". "/>
             <text macro="genre" suffix=". "/>
             <text macro="publisher-group" suffix=". "/>
-            <text macro="recipient" suffix=". "/>
             <text macro="edition" suffix=". "/>
+            <text macro="translator" suffix=". "/>
+            <text macro="medium" suffix=". "/>
             <text macro="issue" suffix=". "/>
             <text macro="accessed" suffix=". "/>
             <text macro="doi" suffix=". "/>
             <text macro="collection" suffix=". "/>
             <text macro="isbn" suffix=". "/>
             <text macro="archive" suffix=". "/>
+            <text macro="keyword" suffix=". "/>
+            <text macro="annote" suffix=". "/>
             <text macro="abstract" suffix=". "/>
             <text macro="note" suffix=". "/>
             <text macro="url"/>

@@ -1,6 +1,6 @@
 project:
   type: default
   output-dir: _output
-  pre-render: lua _extensions/chris2fr/lettre/scaffold/setup.lua
+  pre-render: lua _extensions/lettre/scaffold/setup.lua
   render:
     - template.qmd
