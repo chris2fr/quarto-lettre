@@ -29,20 +29,24 @@ local function render_date(meta)
          '\n]]\n#v(1em)'
 end
 
--- ref: right-aligned 13 cm box, small. Append ref value if shortcode failed.
+-- ref: right-aligned 13 cm box, small. Uses div content; falls back to meta.ref if empty.
 local function render_ref(content, meta)
-  local rendered = to_typst(content)
-  if meta.ref ~= '' and not rendered:find(meta.ref, 1, true) then
-    rendered = rendered .. ' ' .. meta.ref
+  local rendered = strip_leading_break(to_typst(content))
+  if rendered == '' and meta.ref ~= '' then
+    rendered = meta.ref
   end
   return '#pad(left: 4cm)[#block(width: 13cm)[#text(size: 9pt)[\n' ..
          rendered .. '\n]]]'
 end
 
--- subject: right-aligned 13 cm box, bold — built from title metadata.
-local function render_subject(meta)
+-- subject: right-aligned 13 cm box, bold. Uses div content; falls back to meta.title if empty.
+local function render_subject(content, meta)
+  local rendered = strip_leading_break(to_typst(content))
+  if rendered == '' and meta.title ~= '' then
+    rendered = meta.title
+  end
   return '#pad(left: 4cm)[#block(width: 13cm)[#strong[\n' ..
-         meta.title .. '\n]]]'
+         rendered .. '\n]]]'
 end
 
 -- signature: right-aligned 13 cm box — built from author metadata.
@@ -60,7 +64,7 @@ local handlers = {
   to      = function(c, _)
     return '#pad(left: 9cm)[\n' .. to_typst(c) .. '\n]\n#v(1em)'
   end,
-  subject  = function(_, m) return render_subject(m) end,
+  subject  = function(c, m) return render_subject(c, m) end,
   ref      = function(c, m) return render_ref(c, m) end,
   opening  = function(c, _)
     return '#v(1em)\n#pad(left: 4cm)[#block(width: 13cm)[\n' .. to_typst(c) .. '\n]]'

@@ -128,6 +128,30 @@
 }
 
 
+$if(csl-refs)$
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit}
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2]
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  \ifodd #1
+  \setlength{\leftmargin}{\cslhangindent}
+  \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  \setlength{\itemsep}{#2\cslentryspacingunit}}}
+ {\end{list}}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+$endif$
+
 $for(header-includes)$
 $header-includes$
 $endfor$
