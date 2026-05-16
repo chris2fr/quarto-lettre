@@ -55,13 +55,15 @@
     <text variable="number"/>
   </macro>
   <macro name="language">
-    <text variable="LANGUAGE"/>
-  </macro>
-  <macro name="edition">
-    <text variable="EDITION"/>
+    <text variable="language"/>
   </macro>
   <macro name="recipient">
-    <text variable="RECIPIENT"/>
+    <names variable="recipient">
+      <name and="text" name-as-sort-order="all" sort-separator=", " delimiter=", " delimiter-precedes-last="never">
+        <name-part name="family" text-case="uppercase"/>
+        <name-part name="given"/>
+      </name>
+    </names>
   </macro>
   <macro name="translator">
     <names variable="translator">
@@ -293,7 +295,6 @@
             <text macro="accessed" suffix=". "/>
             <text macro="doi" suffix=". "/>
             <text macro="collection" suffix=". "/>
-            <text macro="doi" suffix=". "/>
             <text macro="isbn" suffix=". "/>
             <text macro="archive" suffix=". "/>
             <text macro="abstract" suffix=". "/>
