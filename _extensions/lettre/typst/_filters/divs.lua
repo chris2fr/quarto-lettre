@@ -35,7 +35,7 @@ local function render_ref(content, meta)
   if meta.ref ~= '' and not rendered:find(meta.ref, 1, true) then
     rendered = rendered .. ' ' .. meta.ref
   end
-  return '#align(right)[#block(width: 13cm)[#text(size: 9pt)[\n' ..
+  return '#pad(left: 4cm)[#block(width: 13cm)[#text(size: 9pt)[\n' ..
          rendered .. '\n]]]'
 end
 
