@@ -27,6 +27,7 @@ contributes:
         - _filters/validate.lua
     typst:
       base-format: typ
+      # csl: resources/biblio.csl
       template-partials:
         - typst/_partials/typst-template.typ
         - typst/_partials/typst-show.typ

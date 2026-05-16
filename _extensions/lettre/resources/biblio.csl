@@ -55,7 +55,10 @@
     <text variable="number"/>
   </macro>
   <macro name="language">
-    <text variable="language"/>
+    <text variable="LANGUAGE"/>
+  </macro>
+  <macro name="recipient">
+    <text variable="RECIPIENT"/>
   </macro>
   <macro name="translator">
     <names variable="translator">
@@ -135,21 +138,7 @@
     <text variable="type" prefix=" [" suffix="]"/>
   </macro>
   <macro name="genre">
-    <choose>
-      <if type="map">
-        <choose>
-          <if variable="genre">
-            <text variable="genre" prefix="[" suffix="]"/>
-          </if>
-          <else>
-            <text value="carte" prefix="[" suffix="]"/>
-          </else>
-        </choose>
-      </if>
-      <else>
-        <text variable="genre"/>
-      </else>
-    </choose>
+    <text variable="genre" prefix="[" suffix="]"/>
   </macro>
   <macro name="date">
     <choose>
@@ -295,6 +284,7 @@
             <text macro="publisher-group" suffix=". "/>
             <text macro="page" suffix=". "/>
             <text macro="genre" suffix=". "/>
+            <text macro="recipient" suffix=". "/>
             <text macro="edition" suffix=". "/>
             <text macro="issue" suffix=". "/>
             <text macro="accessed" suffix=". "/>
