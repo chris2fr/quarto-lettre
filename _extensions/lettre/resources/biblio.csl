@@ -255,7 +255,7 @@
   </macro>
   <citation collapse="number" after-collapse-delimiter="; ">
     <sort>
-      <key variable="number"/>
+      <key variable="citation-number"/>
     </sort>
     <layout prefix="(" suffix=")" delimiter=", ">
       <group delimiter=", ">
@@ -269,7 +269,7 @@
   </citation>
   <bibliography>
     <sort>
-      <key variable="number"/>
+      <key variable="citation-number"/>
     </sort>
     <layout>
       <text variable="number" display="left-margin" prefix="(" suffix="). "/>
