@@ -157,7 +157,7 @@
     </choose>
   </macro>
   <macro name="edition">
-    <text variable="edition" form="long"/>
+    <text variable="edition" form="long"  prefix="[" suffix="]"/>
   </macro>
   <macro name="publisher-group">
     <group delimiter="&#160;: ">
@@ -178,7 +178,7 @@
           <text variable="page" prefix="pp.&#160;"/>
         </else-if>
         <else>
-          <text variable="page" prefix="pp.&#160;"/>
+          <text variable="page" prefix="issue.&#160;"/>
         </else>
       </choose>
     </group>
@@ -204,26 +204,16 @@
     </group>
   </macro>
   <macro name="page">
-    <choose>
-      <if type="book thesis manuscript" match="any">
-        <text variable="number-of-pages" suffix="&#160;p"/>
-      </if>
-      <else-if type="chapter paper-conference article-newspaper" match="any">
-        <text variable="page" prefix="pp.&#160;"/>
-      </else-if>
-      <else-if type="report patent" match="any">
-        <text variable="page" suffix="&#160;p"/>
-      </else-if>
-    </choose>
+    <text variable="page" prefix="page(s).&#160;"/>
   </macro>
   <macro name="isbn">
     <text variable="ISBN" prefix="ISBN&#160;"/>
   </macro>
   <macro name="keyword">
-    <text variable="keyword"/>
+    <text variable="keyword"  prefix="[" suffix="]"/>
   </macro>
   <macro name="annote">
-    <text variable="annote"/>
+    <text variable="annote"  prefix="[" suffix="]"/>
   </macro>
   <macro name="doi">
     <text variable="DOI" prefix="DOI&#160;"/>
@@ -234,8 +224,6 @@
         <choose>
           <if variable="URL">
             <group>
-              <text term="retrieved" suffix=" " text-case="capitalize-first"/>
-              <text term="from" suffix=": "/>
               <text variable="URL"/>
             </group>
           </if>
@@ -243,8 +231,8 @@
       </if>
     </choose>
   </macro>
-  <macro name="archive">
-    <group delimiter=":&#160;">
+  <macro name="archive" >
+    <group delimiter=":&#160;"  prefix="[" suffix="]">
       <text variable="archive"/>
       <text macro="archive_location"/>
     </group>
@@ -260,8 +248,8 @@
     </choose>
   </macro>
   <macro name="abstract">
-    <text variable="abstract"/>
-  </macro>
+    <text variable="abstract"  prefix=" [" suffix="] "/>
+  </macro> 
   <macro name="note">
     <text variable="note" prefix=" [" suffix="] "/>
   </macro>
