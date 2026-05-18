@@ -13,7 +13,7 @@
 \usepackage{parskip}
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
-\usepackage[inner=30mm, outer=30mm, top=20mm, bottom=30mm, bindingoffset=0cm, showframe=false]{geometry}
+\usepackage[inner=30mm, outer=30mm, top=50mm, bottom=30mm, headheight=22mm, headsep=8mm, bindingoffset=0cm, showframe=false]{geometry}
 \usepackage[french]{babel}
 \usepackage[osf]{libertinus}
 \usepackage{csquotes}
@@ -37,11 +37,20 @@
 % \DeclareNameAlias{shorthand}{family-given}
 \usepackage[export]{adjustbox}
 \usepackage{fancyhdr}
-\pagestyle{fancy}
 \renewcommand{\headrulewidth}{0pt}
 
-\fancyhead[C]{\small $if(page-header)$$page-header$\vspace{1em}$endif$}
-\fancyfoot[C]{\small \ifnum\value{page}>1 \thepage\\ \fi $if(page-footer)$$page-footer$$endif$}
+% Default style for pages 2+: no header, footer with page number
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\small \thepage\\ $if(page-footer)$$page-footer$$endif$}
+
+% First page only: header with logo, footer without page number
+\fancypagestyle{firstpage}{%
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  $if(page-header)$\fancyhead[C]{$page-header$}$endif$
+  \fancyfoot[C]{\small $if(page-footer)$$page-footer$$endif$}
+}
 
 
 \MakeOuterQuote{"}
@@ -50,7 +59,7 @@
 \author{$author$}
 \date{$date$}
 
-% TODO: Add custom LaTeX header directives her\
+% TODO: Add custom LaTeX header directives here
 
 \newenvironment{div-date}{
   \begin{flushright}\small
