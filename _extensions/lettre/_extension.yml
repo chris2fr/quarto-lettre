@@ -80,7 +80,6 @@ contributes:
       lot: false
       keep-tex: false
       csl: resources/biblio.csl
-      include-in-header: pdf/_partials/header.tex
       include-before-body: pdf/_partials/body-before.tex
       include-after-body: pdf/_partials/body-after.tex
       filters:
