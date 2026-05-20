@@ -21,7 +21,9 @@ local function replace_images_for_latex(blocks)
       end
     end
     if img then
-      local latex = '\\includegraphics[keepaspectratio,max width=\\linewidth]{'
+      -- Constrain to headheight so image never overflows the fancyhdr box upward.
+      -- adjustbox's max height/width keep the aspect ratio without clipping.
+      local latex = '\\includegraphics[keepaspectratio,max height=\\headheight,max width=\\linewidth]{'
                     .. img.src .. '}'
       table.insert(result, pandoc.RawBlock('latex', latex))
     else
