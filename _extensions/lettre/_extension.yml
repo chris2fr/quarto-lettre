@@ -1,6 +1,6 @@
 title: Lettre
 author: Chris Mann
-version: 0.1.7
+version: 0.1.8
 quarto-required: ">=1.9.0"
 contributes:
   project:
@@ -26,7 +26,7 @@ contributes:
         - _filters/page.lua
         - _filters/validate.lua
     typst:
-      base-format: typ
+      base-format: typst
       # csl: resources/biblio.csl
       template-partials:
         - typst/_partials/typst-template.typ
@@ -34,7 +34,7 @@ contributes:
       format-resources:
         - typst/quarto-lettre.typ
       papersize: a4
-      keep-typ: false
+      keep-typ: true
       toc: false
       output-file: typst.pdf
       filters:
@@ -82,7 +82,7 @@ contributes:
       toc: false
       lof: false
       lot: false
-      keep-tex: false
+      keep-tex: true
       csl: resources/biblio.csl
       include-before-body: pdf/_partials/body-before.tex
       include-after-body: pdf/_partials/body-after.tex

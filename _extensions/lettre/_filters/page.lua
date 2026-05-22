@@ -83,6 +83,22 @@ local function replace_images_inline(blocks)
   return result
 end
 
+-- Route smart double-quotes through csquotes (\enquote) in LaTeX so babel-french
+-- produces guillemets. For Typst, emit ASCII " so Typst's own smart-quote engine
+-- (which knows to use guillemets when lang is "fr") does the work.
+function Quoted(el)
+  if el.quotetype ~= 'DoubleQuote' then return nil end
+  if FORMAT:match('latex') then
+    local inner = pandoc.write(pandoc.Pandoc({ pandoc.Plain(el.content) }), 'latex')
+                    :gsub('\n$', '')
+    return pandoc.RawInline('latex', '\\enquote{' .. inner .. '}')
+  elseif FORMAT:match('typst') then
+    local inner = pandoc.write(pandoc.Pandoc({ pandoc.Plain(el.content) }), 'typst')
+                    :gsub('\n$', '')
+    return pandoc.RawInline('typst', '"' .. inner .. '"')
+  end
+end
+
 -- Intercept ::: header ::: and ::: footer ::: divs.
 -- Each matching div is rendered to the current output format and stored as
 -- `page-header` / `page-footer` metadata, then removed from the document body.

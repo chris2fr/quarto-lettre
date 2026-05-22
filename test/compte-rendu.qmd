@@ -20,6 +20,20 @@ format:
     output-file: compte-rendu.md
   compte-rendu-plain: 
     output-file: compte-rendu.txt
+  document-html: 
+    output-file: document.html
+  document-pdf: 
+    output-file: document.pdf
+  document-typst: 
+    output-file: document-typst.pdf
+  document-docx: 
+    output-file: document.docx
+  document-odt: 
+    output-file: document.odt
+  document-md: 
+    output-file: document.md
+  document-plain: 
+    output-file: document.txt
 ---
 
 ::: header
@@ -56,9 +70,9 @@ Compte-rende en attente d'approbation.
 
 ::: body
 
-# Notes de réunion
+# "Notes" de réunion
 
-Notes de la réunion.
+Notes de la "réunion". 
 :::
 
 ::: footer
