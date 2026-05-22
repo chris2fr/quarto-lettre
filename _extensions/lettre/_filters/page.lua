@@ -33,6 +33,33 @@ local function replace_images_for_latex(blocks)
   return result
 end
 
+-- For Typst, a standalone image inside a header renders as a #figure block.
+-- Replace it with a plain #image() call constrained to header height.
+local function replace_images_for_typst(blocks)
+  local result = {}
+  for _, block in ipairs(blocks) do
+    local img = nil
+    if (block.t == 'Para' or block.t == 'Plain') and
+       #block.content == 1 and block.content[1].t == 'Image' then
+      img = block.content[1]
+    elseif block.t == 'Figure' and block.content and #block.content == 1 then
+      local inner = block.content[1]
+      if (inner.t == 'Plain' or inner.t == 'Para') and
+         inner.content and #inner.content == 1 and
+         inner.content[1].t == 'Image' then
+        img = inner.content[1]
+      end
+    end
+    if img then
+      table.insert(result, pandoc.RawBlock('typst',
+        '#image("' .. img.src .. '", height: 15mm, fit: "contain")'))
+    else
+      table.insert(result, block)
+    end
+  end
+  return result
+end
+
 -- Intercept ::: header ::: and ::: footer ::: divs.
 -- Each matching div is rendered to the current output format and stored as
 -- `page-header` / `page-footer` metadata, then removed from the document body.
@@ -44,8 +71,14 @@ function Div(el)
       local fmt = FORMAT:match('html') and 'html'
                or FORMAT:match('markdown') and 'markdown'
                or FORMAT
-      local content = (fmt == 'latex') and replace_images_for_latex(el.content)
-                                        or el.content
+      local content
+      if fmt == 'latex' then
+        content = replace_images_for_latex(el.content)
+      elseif fmt == 'typst' then
+        content = replace_images_for_typst(el.content)
+      else
+        content = el.content
+      end
       -- Render the div's content and strip the trailing newline pandoc adds
       local rendered = pandoc.write(pandoc.Pandoc(content), fmt):gsub('\n$', '')
       -- Wrap in MetaBlocks so templates receive a block-level value.
