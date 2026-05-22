@@ -24,7 +24,7 @@
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage[french]{babel}
 \RequirePackage[osf]{libertinus}
-\RequirePackage{csquotes}
+\RequirePackage[autostyle=true,french=guillemets]{csquotes}
 \RequirePackage{enumitem}
 \RequirePackage{soul}
 \RequirePackage{bookmark}
