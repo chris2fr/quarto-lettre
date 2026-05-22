@@ -13,8 +13,8 @@
   set page(
     paper:  paper,
     margin: margin,
-    header: if page-header != none {
-      align(center, text(size: 9pt, page-header))
+    header: context if counter(page).get().first() == 1 and page-header != none {
+      pad(top: 5mm, align(center, text(size: 9pt, page-header)))
     },
     footer: context {
       let pg = counter(page).get().first()
