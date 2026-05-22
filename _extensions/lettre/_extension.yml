@@ -76,6 +76,8 @@ contributes:
     pdf:
       base-format: pdf
       template: pdf/layout.tex
+      format-resources:
+        - pdf/quarto-lettre.cls
       papersize: a4
       toc: false
       lof: false
