@@ -37,6 +37,18 @@ contributes:
       filters:
         - ../lettre/_filters/page.lua
         - _filters/validate.lua
+    md:
+      base-format: markdown
+      toc: false
+      template: md/layout.md
+      wrap: none
+      tabstop: 2
+      preserve-tabs: false
+      filters:
+        - ../lettre/_filters/page.lua
+        - _filters/validate.lua
+        - md/_filters/tables.lua
+        - md/_filters/divs.lua
     pdf:
       base-format: pdf
       template: pdf/layout.tex
