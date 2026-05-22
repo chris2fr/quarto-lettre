@@ -31,6 +31,8 @@ contributes:
       template-partials:
         - typst/_partials/typst-template.typ
         - typst/_partials/typst-show.typ
+      format-resources:
+        - typst/quarto-lettre.typ
       papersize: a4
       keep-typ: false
       toc: false

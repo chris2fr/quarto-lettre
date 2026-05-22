@@ -23,7 +23,11 @@ contributes:
         - _filters/validate.lua
     typst:
       base-format: typ
-      template: typst/layout.typ
+      template-partials:
+        - typst/_partials/typst-template.typ
+        - typst/_partials/typst-show.typ
+      format-resources:
+        - typst/quarto-lettre.typ
       papersize: a4
       keep-typ: false
       toc: false
