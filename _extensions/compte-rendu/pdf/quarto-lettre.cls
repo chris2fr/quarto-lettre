@@ -39,6 +39,7 @@
 \RequirePackage{fancyhdr}
 \RequirePackage{afterpage}
 
+\setcounter{secnumdepth}{0}
 \newcounter{none}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
