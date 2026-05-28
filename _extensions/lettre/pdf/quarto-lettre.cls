@@ -12,7 +12,7 @@
 \LoadClass{article}
 
 % ── Page geometry ─────────────────────────────────────────────────────────────
-\RequirePackage[inner=22mm, outer=22mm, top=5mm, bottom=25mm,
+\RequirePackage[inner=20mm, outer=20mm, top=5mm, bottom=25mm,
                 headheight=15mm, headsep=5mm,
                 showframe=false, includehead]{geometry}
 
