@@ -11,6 +11,8 @@ $endfor$
 % ── Margins (YAML: margin-inner, margin-outer, margin-top, margin-bottom) ─────
 \geometry{inner=$if(margin-inner)$$margin-inner$$else$20mm$endif$,outer=$if(margin-outer)$$margin-outer$$else$20mm$endif$,top=5mm,bottom=25mm,headheight=15mm,headsep=5mm,includehead}
 
+\providecommand{\square}{\ensuremath{\vcenter{\hbox{\fbox{\phantom{\rule{0.55em}{0.55em}}}}}}}
+
 % ── Section styling ───────────────────────────────────────────────────────────
 \setcounter{secnumdepth}{0}
 \titleformat{\section}{\large\bfseries\sffamily}{}{0em}{}[\vspace{-0.5em}\rule{\linewidth}{0.4pt}]
