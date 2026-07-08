@@ -154,3 +154,11 @@ function Pandoc(doc)
   end
   return doc
 end
+
+-- Run Meta as its own pass so french_quotes is set before Quoted/Div run:
+-- in a single combined filter, Pandoc visits body elements before metadata,
+-- which would otherwise leave french_quotes stale on the first read.
+return {
+  { Meta = Meta },
+  { Quoted = Quoted, Div = Div, Pandoc = Pandoc },
+}

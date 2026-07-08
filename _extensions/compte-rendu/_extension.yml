@@ -1,6 +1,6 @@
 title: Compte-rendu
 author: Chris Mann
-version: 0.1.10
+version: 0.1.11
 quarto-required: ">=1.9.0"
 contributes:
   project:
@@ -11,6 +11,7 @@ contributes:
       date-format: long
       date: today
     html:
+      french-quotes: true
       base-format: html
       page-layout: custom
       template: html/layout.html

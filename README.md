@@ -157,6 +157,20 @@ format:
 
 ---
 
+## French guillemets in HTML
+
+In LaTeX and Typst output, smart double quotes (`"..."`) are always rendered as French guillemets (« ... »). In HTML output this is opt-in via the `french-quotes` metadata key — enabled by default:
+
+```yaml
+format:
+  lettre-html:
+    french-quotes: true
+```
+
+Set it at the document level or under a specific HTML format to override the extension's default.
+
+---
+
 ## Render
 
 ```bash
