@@ -3,4 +3,6 @@ qlettre-init() {
   quarto add ~/dev/quarto-lettre --no-prompt
   cp ~/dev/quarto-lettre/_quarto.yml .
   cp ~/dev/quarto-lettre/template.qmd "./$(basename "$1").qmd"
+  mkdir -p scripts
+  cp ~/dev/quarto-lettre/scripts/clean-artifacts.sh scripts/
 }
