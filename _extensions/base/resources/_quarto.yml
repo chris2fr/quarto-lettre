@@ -1,0 +1,6 @@
+project:
+  type: default
+  output-dir: _output
+  post-render:
+    - _extensions/base/scripts/clean-artifacts.sh
+  # pre-render: lua _extensions/lettre/scaffold/setup.lua
