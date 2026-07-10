@@ -36,6 +36,7 @@ contributes:
       format-resources:
         - typst/quarto-lettre.typ
       papersize: a4
+      keep-typ: true
       toc: false
       output-file: typst.pdf
       filters:
@@ -83,6 +84,7 @@ contributes:
       toc: false
       lof: false
       lot: false
+      keep-tex: true
       csl: ../base/resources/biblio.csl
       include-before-body: pdf/_partials/body-before.tex
       include-after-body: pdf/_partials/body-after.tex
