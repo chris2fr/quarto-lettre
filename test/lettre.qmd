@@ -140,7 +140,7 @@ quarto render lettre.qmd
 
 #### Niveau 4 — Notes techniques
 
-L'extension requiert **Quarto 1.9** ou supérieur. Les métadonnées YAML (`title`, `author`, `ref`, `lang`, `place`, `date`) sont réutilisables dans le document via `{{< meta clé >}}`.
+L'extension requiert **Quarto 1.9** ou supérieur. Les métadonnées YAML (`title`, `author`, `ref`, `lang`, `place`, `date`) sont réutilisables dans le document via `{{{< meta clé >}}}`.
 
 Extrait de code Lua :
 

@@ -129,7 +129,11 @@ function Div(el)
         return {}
       end
 
-      -- Text formats: render to the target format string and store as a raw block.
+      -- Text formats: keep as native AST (stored in metadata) rather than
+      -- pre-rendering to a string. Pre-rendering via pandoc.write() here would
+      -- freeze any not-yet-resolved shortcode/custom nodes (e.g. `{{< brand ... >}}`)
+      -- as inert text, since those are only expanded in a later pass that walks
+      -- the final document, not raw strings produced mid-filter-chain.
       local content
       if     fmt == 'latex'    then content = replace_images_for_latex(el.content)
       elseif fmt == 'typst'    then content = replace_images_for_typst(el.content)
@@ -137,9 +141,8 @@ function Div(el)
       else                          content = el.content
       end
 
-      local rendered = pandoc.write(pandoc.Pandoc(content), fmt):gsub('\n$', '')
-      if rendered ~= '' then
-        extracted['page-' .. class] = pandoc.MetaBlocks({ pandoc.RawBlock(fmt, rendered) })
+      if #content > 0 then
+        extracted['page-' .. class] = pandoc.MetaBlocks(content)
       end
       return {}
     end
