@@ -7,21 +7,42 @@ function Meta(m)
   french_quotes = m['french-quotes'] == true
 end
 
--- Extract a standalone image from a block, or return nil.
+-- Unwrap a single inline into (image, link-target). The image may be bare
+-- or wrapped in a Link (e.g. `[![alt](logo.png)](https://example.org)`).
+local function unwrap_image(inline)
+  if inline.t == 'Image' then
+    return inline, nil
+  elseif inline.t == 'Link' and #inline.content == 1 and inline.content[1].t == 'Image' then
+    return inline.content[1], inline.target
+  end
+  return nil
+end
+
+-- Extract a standalone image (optionally linked) from a block, or return nil.
 -- Handles both a bare Para/Plain(Image) and Pandoc 3.x Figure(Plain(Image)).
 local function extract_image(block)
-  if (block.t == 'Para' or block.t == 'Plain') and
-     #block.content == 1 and block.content[1].t == 'Image' then
-    return block.content[1]
+  local img, link
+  if (block.t == 'Para' or block.t == 'Plain') and #block.content == 1 then
+    img, link = unwrap_image(block.content[1])
   elseif block.t == 'Figure' and block.content and #block.content == 1 then
     local inner = block.content[1]
     if (inner.t == 'Plain' or inner.t == 'Para') and
-       inner.content and #inner.content == 1 and
-       inner.content[1].t == 'Image' then
-      return inner.content[1]
+       inner.content and #inner.content == 1 then
+      img, link = unwrap_image(inner.content[1])
     end
   end
-  return nil
+  -- Quarto promotes a standalone (possibly linked) image to a Figure and
+  -- moves its alt text to the Figure's own caption (a Blocks value), leaving
+  -- img.caption empty. Pull the inline content back out so descriptions
+  -- survive either way.
+  if img and #img.caption == 0 and block.t == 'Figure' and
+     block.caption and #block.caption.long > 0 then
+    local first = block.caption.long[1]
+    if first and (first.t == 'Plain' or first.t == 'Para') then
+      img.caption = first.content
+    end
+  end
+  return img, link
 end
 
 -- LaTeX: replace with \includegraphics constrained to headheight.
@@ -29,11 +50,14 @@ end
 local function replace_images_for_latex(blocks)
   local result = {}
   for _, block in ipairs(blocks) do
-    local img = extract_image(block)
+    local img, link = extract_image(block)
     if img then
-      table.insert(result, pandoc.RawBlock('latex',
-        '\\includegraphics[keepaspectratio,max height=\\headheight,max width=\\linewidth]{'
-        .. img.src .. '}'))
+      local graphic = '\\includegraphics[keepaspectratio,max height=\\headheight,max width=\\linewidth]{'
+        .. img.src .. '}'
+      if link then
+        graphic = '\\href{' .. link .. '}{' .. graphic .. '}'
+      end
+      table.insert(result, pandoc.RawBlock('latex', graphic))
     else
       table.insert(result, block)
     end
@@ -45,10 +69,13 @@ end
 local function replace_images_for_typst(blocks)
   local result = {}
   for _, block in ipairs(blocks) do
-    local img = extract_image(block)
+    local img, link = extract_image(block)
     if img then
-      table.insert(result, pandoc.RawBlock('typst',
-        '#image("' .. img.src .. '", height: 15mm, fit: "contain")'))
+      local image = '#image("' .. img.src .. '", height: 15mm, fit: "contain")'
+      if link then
+        image = '#link("' .. link .. '")[' .. image .. ']'
+      end
+      table.insert(result, pandoc.RawBlock('typst', image))
     else
       table.insert(result, block)
     end
@@ -60,12 +87,15 @@ end
 local function replace_images_for_html(blocks)
   local result = {}
   for _, block in ipairs(blocks) do
-    local img = extract_image(block)
+    local img, link = extract_image(block)
     if img then
       local alt = pandoc.utils.stringify(img.caption):gsub('"', '&quot;')
-      table.insert(result, pandoc.RawBlock('html',
-        '<img src="' .. img.src .. '" alt="' .. alt
-        .. '" style="max-height:3rem;width:auto;max-width:100%;">'))
+      local tag = '<img src="' .. img.src .. '" alt="' .. alt
+        .. '" style="max-height:3rem;width:auto;max-width:100%;">'
+      if link then
+        tag = '<a href="' .. link .. '">' .. tag .. '</a>'
+      end
+      table.insert(result, pandoc.RawBlock('html', tag))
     else
       table.insert(result, block)
     end
@@ -73,15 +103,18 @@ local function replace_images_for_html(blocks)
   return result
 end
 
--- docx / odt: unwrap Figure nodes to Plain(Image).
+-- docx / odt: unwrap Figure nodes to Plain(Image), capped at 15mm tall (same
+-- as Typst) since the writer would otherwise emit the image at full native size.
 -- pandoc.write() with binary formats produces an unusable blob; store native
 -- AST blocks instead so the docx/odt writer renders them directly.
 local function replace_images_inline(blocks)
   local result = {}
   for _, block in ipairs(blocks) do
-    local img = extract_image(block)
+    local img, link = extract_image(block)
     if img then
-      table.insert(result, pandoc.Plain({ img }))
+      img.attr.attributes['height'] = '15mm'
+      local inline = link and pandoc.Link({ img }, link) or img
+      table.insert(result, pandoc.Para({ inline }))
     else
       table.insert(result, block)
     end
@@ -110,8 +143,9 @@ function Quoted(el)
 end
 
 -- Intercept ::: header ::: and ::: footer ::: divs.
--- Each matching div is rendered to the current output format and stored as
--- `page-header` / `page-footer` metadata, then removed from the document body.
+-- For docx/odt the div stays in the body (see below). For every other format
+-- it is rendered and stored as `page-header` / `page-footer` metadata, then
+-- removed from the document body.
 function Div(el)
   for _, class in ipairs({ 'header', 'footer' }) do
     if el.classes:includes(class) then
@@ -120,13 +154,13 @@ function Div(el)
                or FORMAT:match('markdown') and 'markdown'
                or FORMAT
 
-      -- Binary formats: store as native AST (no pandoc.write to binary).
+      -- Binary formats: docx/odt have no template to consume page-header /
+      -- page-footer metadata, so keep the div in the body (styled by
+      -- docx/_filters/divs.lua) instead of stashing it where it would be
+      -- silently dropped.
       if fmt == 'docx' or fmt == 'odt' then
-        local blocks = replace_images_inline(el.content)
-        if #blocks > 0 then
-          extracted['page-' .. class] = pandoc.MetaBlocks(blocks)
-        end
-        return {}
+        el.content = replace_images_inline(el.content)
+        return el
       end
 
       -- Text formats: keep as native AST (stored in metadata) rather than

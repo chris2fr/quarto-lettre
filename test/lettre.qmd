@@ -22,7 +22,7 @@ format:
 ---
 
 ::: header
-![**Les Grands Voisins** --- Association d'intérêt général](logo-lesgrandsvoisins-900-150-white.png)
+[![Les Grands Voisins — Association d'intérêt général](logo-lesgrandsvoisins-900-150-white.png)](https://www.lesgrandsvoisins.com)
 :::
 
 ::: from

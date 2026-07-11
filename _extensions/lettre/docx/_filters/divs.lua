@@ -1,4 +1,5 @@
 local style_for_class = {
+  header    = 'Letter Header',
   from      = 'Letter From',
   date      = 'Letter Date',
   to        = 'Letter To',
@@ -8,6 +9,7 @@ local style_for_class = {
   body      = 'Letter Body',
   closing   = 'Letter Closing',
   signature = 'Letter Signature',
+  footer    = 'Letter Footer',
 }
 
 function Div(el)
