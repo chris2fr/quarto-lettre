@@ -163,7 +163,7 @@ function Quoted(el)
   end
 end
 
--- Classes that can fall back to an extension-provided generic/<class>.qmd
+-- Classes that can fall back to an extension-provided <class>.qmd
 -- snippet when the document doesn't define them. header/footer place their
 -- content outside the normal body flow (see apply_section); the rest are
 -- plain in-body divs, positioned relative to their neighbours in BODY_ORDER
@@ -258,7 +258,7 @@ end
 --      — a project-wide override, e.g. shared by every letter in a project.
 --   3. the base extension's own bundled default, resolved relative to this
 --      filter script's own location (base/_filters/page.lua →
---      base/parts/generic/<class>.qmd) so it works regardless of which
+--      base/parts/<class>.qmd) so it works regardless of which
 --      project or document is being rendered.
 -- The first one found wins: a _parts/ file always takes precedence over the
 -- extension's own default.
@@ -276,7 +276,7 @@ local function find_part(class)
   end
   if PANDOC_SCRIPT_FILE then
     table.insert(candidates, pandoc.path.join({
-      pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', 'parts', 'generic', class .. '.qmd'
+      pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', 'parts', class .. '.qmd'
     }))
   end
   for _, path in ipairs(candidates) do
@@ -310,7 +310,7 @@ local function scaffold_parts()
   if pcall(pandoc.system.list_directory, parts_dir) then return end
 
   local generic_dir = pandoc.path.join({
-    pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', 'parts', 'generic'
+    pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', 'parts'
   })
   local ok, files = pcall(pandoc.system.list_directory, generic_dir)
   if not ok then return end
@@ -408,7 +408,7 @@ local function bucket_blocks(doc)
 end
 
 -- Rebuild doc.blocks in BODY_ORDER: divs that were found are used as-is;
--- divs that are missing but have a generic/<class>.qmd fallback are
+-- divs that are missing but have a <class>.qmd fallback are
 -- synthesized in their canonical position. 'body' additionally falls back to
 -- the document's loose content (see bucket_blocks) before falling back to a
 -- generic file. Any class still missing (or without a fallback) is simply
