@@ -6,3 +6,6 @@ contributes:
   filters:
     - _filters/page.lua
     - md/_filters/tables.lua
+  metadata:
+    project:
+      brand: brand.yml

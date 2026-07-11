@@ -1,0 +1,18 @@
+# minimal brand.yml enabling dark mode
+# replace with your brand colors, logos, and typography!
+meta:
+  name: ""
+  url: ""
+typography:
+  fonts:
+    - family: Jura
+      source: google
+  base: Jura
+  headings: Jura
+color:
+  background:
+    light: "#eee"
+    dark: "#000"
+  foreground:
+    light: "#000"
+    dark: "#eee"
