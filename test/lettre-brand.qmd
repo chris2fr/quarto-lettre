@@ -21,10 +21,6 @@ format:
   lettre-plain: default
 ---
 
-::: header
-[![Les Grands Voisins — Association d'intérêt général](_brand/logo/logo-lesgrandsvoisins-600-100-white.png)](https://www.lesgrandsvoisins.com)
-:::
-
 ::: from
 {{< meta author >}}\
 7 place de l'Église\
