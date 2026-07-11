@@ -143,16 +143,16 @@ function Quoted(el)
 end
 
 -- Classes handled by this filter, and whether an actual ::: header/footer :::
--- div was found for each while walking the document (see find_brand_layout).
+-- div was found for each while walking the document (see find_generic_layout).
 local seen = { header = false, footer = false }
 
--- Format-specific rendering shared by both a real div and a brand-layout
+-- Format-specific rendering shared by both a real div and a generic-layout
 -- fallback file. For docx/odt returns a content list to place in the body
 -- (wrapped in a Div so docx/_filters/divs.lua can still style it); for every
 -- other format it stashes `page-<class>` metadata for the layout templates.
 -- `doc` is nil when called while still walking the tree (a real div, before
 -- Pandoc(doc) exists) — the metadata is queued in `extracted` and applied
--- once Pandoc(doc) runs. When called from Pandoc(doc) itself (brand-layout
+-- once Pandoc(doc) runs. When called from Pandoc(doc) itself (generic-layout
 -- fallback) `doc` is passed through so metadata can be set directly.
 local function apply_section(class, content, doc)
   -- Normalise format variants: html* → 'html', markdown* → 'markdown'
@@ -203,32 +203,28 @@ function Div(el)
   end
 end
 
--- A brand can ship a ready-made `_brand/layout/header.qmd` / `footer.qmd`
--- snippet. When the document itself has no ::: header/footer ::: div, fall
--- back to that file's content, resolved next to the project (or, lacking a
--- project, next to the rendered .qmd).
-local function find_brand_layout(class)
-  local dirs = {}
-  if quarto and quarto.project and quarto.project.directory and quarto.project.directory ~= '' then
-    table.insert(dirs, quarto.project.directory)
-  end
-  if PANDOC_STATE and PANDOC_STATE.input_files and #PANDOC_STATE.input_files > 0 then
-    table.insert(dirs, pandoc.path.directory(PANDOC_STATE.input_files[1]))
-  end
-  for _, dir in ipairs(dirs) do
-    local path = pandoc.path.join({ dir, '_brand', 'layout', class .. '.qmd' })
-    local f = io.open(path, 'r')
-    if f then
-      f:close()
-      return path
-    end
+-- The base extension ships a generic default header/footer under its own
+-- layout/generic/ directory. When the document itself has no
+-- ::: header/footer ::: div, fall back to that file's content, resolved
+-- relative to this filter script's own location (base/_filters/page.lua →
+-- base/layout/generic/<class>.qmd) so it works regardless of which project
+-- or document is being rendered.
+local function find_generic_layout(class)
+  if not PANDOC_SCRIPT_FILE then return nil end
+  local path = pandoc.path.join({
+    pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', 'layout', 'generic', class .. '.qmd'
+  })
+  local f = io.open(path, 'r')
+  if f then
+    f:close()
+    return path
   end
   return nil
 end
 
--- Read a brand layout .qmd, strip any YAML front matter, and parse it into
+-- Read a generic layout .qmd, strip any YAML front matter, and parse it into
 -- blocks the same way a ::: header/footer ::: div's content would arrive.
-local function read_brand_layout(path)
+local function read_generic_layout(path)
   local f = io.open(path, 'r')
   if not f then return nil end
   local text = f:read('a')
@@ -239,7 +235,8 @@ end
 
 -- Inject the extracted values into document metadata so layout templates
 -- can reference $page-header$ and $page-footer$, and fill in any
--- header/footer missing from the document from the brand's layout files.
+-- header/footer missing from the document from the extension's generic
+-- layout files.
 function Pandoc(doc)
   for key, value in pairs(extracted) do
     doc.meta[key] = value
@@ -247,9 +244,9 @@ function Pandoc(doc)
 
   for _, class in ipairs({ 'header', 'footer' }) do
     if not seen[class] then
-      local path = find_brand_layout(class)
+      local path = find_generic_layout(class)
       if path then
-        local blocks = read_brand_layout(path)
+        local blocks = read_generic_layout(path)
         if blocks and #blocks > 0 then
           local div = apply_section(class, blocks, doc)
           if div then
