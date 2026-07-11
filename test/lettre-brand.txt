@@ -1,0 +1,132 @@
+[Les Grands Voisins — Association d’intérêt général]
+
+Chris Mann
+7 place de l’Église
+92260 Fontenay-aux-Roses
+
+Paris, le 7 juin 2026
+
+Le développeur Quarto
+À qui de droit
+
+Test complet — Extension « Lettre »
+
+réf. test-lettre-2026-06-07
+
+Madame, Monsieur,
+
+La présente “lettre” teste l’ensemble des fonctionnalités de l’extension
+Lettre[1] pour Quarto. Elle couvre tous les éléments de mise en forme,
+quatre niveaux de titres et des images intégrées(Dupont 2022).
+
+[Les Grands Voisins]
+
+Niveau 1 — Présentation générale
+
+L’extension “Lettre” permet de rédiger des lettres formelles en Markdown
+et de les exporter vers sept formats de sortie simultanément. Voici un
+exemple de logo intégré dans le corps :
+
+[Logo Les Grands Voisins]
+
+  Une citation mise en valeur dans un bloc. Elle peut s’étendre sur
+  plusieurs lignes et illustre la mise en forme d’un extrait ou d’une
+  référence.
+
+Niveau 2 — Mise en forme du texte
+
+Du texte en gras, en italique, en gras italique, et du code inline. Un
+lien vers Quarto et une note de bas de page[2].
+
+Liste non ordonnée :
+
+- Élément A
+- Élément B
+  - Sous-élément B1
+  - Sous-élément B2
+- Élément C
+
+Liste ordonnée(Dupont Group 2024) :
+
+1.  Premier point
+2.  Deuxième point
+3.  Troisième point
+
+Niveau 2 — Tableaux
+
+Tableau standard :
+
+  Div          Rôle
+  ------------ ------------------------
+  ::: header   En-tête de page
+  ::: from     Coordonnées expéditeur
+  ::: to       Adresse destinataire
+  ::: body     Corps de la lettre
+
+Image réduite à 40 % de la largeur :
+
+[Logo réduit]
+
+Niveau 3 — Tableau de facturation
+
++--------------+---------------+----------+-------+
+| Description  | Prix unitaire | Quantité | Total |
++:=============+:=============:+:========:+======:+
+| Prestation A | 100 €         | 2        | 200 € |
++--------------+---------------+----------+-------+
+| Prestation B | 50 €          | 3        | 150 € |
++--------------+---------------+----------+-------+
+| Total                                   | 350 € |
++-----------------------------------------+-------+
+
+Niveau 3 — Bloc de code
+
+Configuration YAML de l’extension :
+
+    format:
+      lettre-html: default
+      lettre-pdf: default
+      lettre-typst: default
+      lettre-docx: default
+      lettre-odt: default
+      lettre-md: default
+      lettre-plain: default
+
+Commande de rendu :
+
+    quarto render lettre.qmd
+
+Niveau 4 — Notes techniques
+
+L’extension requiert Quarto 1.9 ou supérieur. Les métadonnées YAML
+(title, author, ref, lang, place, date) sont réutilisables dans le
+document via {{< meta clé >}}.
+
+Extrait de code Lua :
+
+    function Div(el)
+      if el.classes:includes("body") then
+        return el.content
+      end
+    end
+
+En espérant que cette extension vous sera utile, je reste à votre
+disposition pour toute question ou suggestion, et vous adresse mes
+cordiales salutations.
+
+Chris Mann
+
+Dupont Group. 2024. Other Thing. Pamphlet No. 2. Recipient@example.com.
+Dupont@example.com. https://example.com/dupont/otherthing.
+
+Dupont, Jean. 2022. Something. Handwritten note No. 3.
+Recipient@example.com. This is a volume. John@example.com.
+https://example.com/something.
+
+[1] Un format de lettre français pour Quarto.
+
+[2] Ceci est une deuxième note de bas de page.
+
++33 7 81 81 18 11 — chris@lesgrandsvoisins.com
+Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS
+Association d’intérêt général de loi 1901 RNA W751240710 SIREN 832760102

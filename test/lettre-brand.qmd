@@ -24,7 +24,7 @@ format:
 
 La présente "lettre" teste l'ensemble des fonctionnalités de l'extension **Lettre**^[Un format de lettre français pour Quarto.] pour [Quarto](https://quarto.org). Elle couvre tous les éléments de mise en forme, quatre niveaux de titres et des images intégrées[@something].
 
-{{< brand logo medium >}}
+![Les Grands Voisins](_brand/logo/logo-lesgrandsvoisins-600-100-white.png)
 
 # Niveau 1 — Présentation générale
 
