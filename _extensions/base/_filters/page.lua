@@ -3,8 +3,19 @@ local extracted = {}
 
 local french_quotes = false
 
+-- Whether an actual div was found for each fallback-eligible class while
+-- walking the document (see find_generic_layout further down).
+local seen = {}
+
+-- Quarto can run several output formats of the same document through one
+-- persistent Lua state (not a fresh process per format), so every module-
+-- level table above must be cleared per format or state leaks from one
+-- format's render into the next one's. Meta() runs once at the start of
+-- each format's filter pass, so reset here.
 function Meta(m)
   french_quotes = m['french-quotes'] == true
+  extracted = {}
+  seen = {}
 end
 
 -- Unwrap a single inline into (image, link-target). The image may be bare
@@ -142,9 +153,28 @@ function Quoted(el)
   end
 end
 
--- Classes handled by this filter, and whether an actual ::: header/footer :::
--- div was found for each while walking the document (see find_generic_layout).
-local seen = { header = false, footer = false }
+-- Classes that can fall back to an extension-provided generic/<class>.qmd
+-- snippet when the document doesn't define them. header/footer place their
+-- content outside the normal body flow (see apply_section); the rest are
+-- plain in-body divs, positioned relative to their neighbours in BODY_ORDER
+-- (see fill_missing_body_divs).
+local FALLBACK_CLASSES = {
+  header = true, footer = true,
+  date = true, to = true, subject = true, ref = true,
+  opening = true, closing = true, signature = true,
+}
+local HEADER_FOOTER = { header = true, footer = true }
+
+-- Canonical position of every body div in a lettre document. 'from' and
+-- 'body' anchor the sequence but never get a generic fallback (sender
+-- address and letter content are never generic) — they just mark where
+-- fallback divs around them should be inserted.
+local BODY_ORDER = { 'from', 'date', 'to', 'subject', 'ref', 'opening', 'body', 'closing', 'signature' }
+
+-- Every class fill_missing_body_divs needs presence tracked for, including
+-- from/body which anchor positions but are never synthesized themselves.
+local ALL_BODY_CLASSES = {}
+for _, class in ipairs(BODY_ORDER) do ALL_BODY_CLASSES[class] = true end
 
 -- Format-specific rendering shared by both a real div and a generic-layout
 -- fallback file. For docx/odt returns a content list to place in the body
@@ -191,14 +221,21 @@ local function apply_section(class, content, doc)
   return nil
 end
 
--- Intercept ::: header ::: and ::: footer ::: divs and hand their content to
--- apply_section. The docx/odt Div returned here is spliced back in place;
--- every other format is removed from the body (its content lives in metadata).
+-- Track which body-sequence divs are actually present (needed by
+-- fill_missing_body_divs to place fallbacks correctly, even for from/body
+-- which never get synthesized themselves). header/footer are handed to
+-- apply_section (docx/odt Div spliced back in place; every other format is
+-- removed from the body, its content living in metadata instead). The rest
+-- are left alone here — they're plain in-body divs already styled by each
+-- format's own divs.lua filter further down the chain — we only note they exist.
 function Div(el)
-  for _, class in ipairs({ 'header', 'footer' }) do
-    if el.classes:includes(class) then
+  for _, class in ipairs(el.classes) do
+    if HEADER_FOOTER[class] then
       seen[class] = true
       return apply_section(class, el.content, nil) or {}
+    elseif ALL_BODY_CLASSES[class] then
+      seen[class] = true
+      return nil
     end
   end
 end
@@ -222,32 +259,101 @@ local function find_generic_layout(class)
   return nil
 end
 
--- Read a generic layout .qmd, strip any YAML front matter, and parse it into
--- blocks the same way a ::: header/footer ::: div's content would arrive.
+-- Expand `{{< meta key >}}` shortcodes by hand: the file is read and parsed
+-- straight from disk (outside quarto's own document pipeline), so its raw
+-- text never goes through quarto's shortcode-resolution pass the way the
+-- current document's own content does.
+local function expand_meta_shortcodes(text)
+  return (text:gsub('{{<%s*meta%s+([%w%.%-_]+)%s*>}}', function(key)
+    local value = quarto.metadata.get(key)
+    if value == nil then return '' end
+    return pandoc.utils.stringify(value)
+  end))
+end
+
+-- Read a generic layout .qmd, strip any YAML front matter, expand `{{< meta
+-- ... >}}` shortcodes, and parse it into blocks the same way a
+-- ::: header/footer ::: div's content would arrive.
 local function read_generic_layout(path)
   local f = io.open(path, 'r')
   if not f then return nil end
   local text = f:read('a')
   f:close()
   text = text:gsub('^%-%-%-\n.-\n%-%-%-\n', '')
+  text = expand_meta_shortcodes(text)
   return pandoc.read(text, 'markdown').blocks
 end
 
--- Inject the extracted values into document metadata so layout templates
--- can reference $page-header$ and $page-footer$, and fill in any
--- header/footer missing from the document from the extension's generic
--- layout files.
+-- Load a class's generic/<class>.qmd, if any, already parsed into blocks.
+local function load_generic(class)
+  local path = find_generic_layout(class)
+  if not path then return nil end
+  local blocks = read_generic_layout(path)
+  if blocks and #blocks > 0 then return blocks end
+  return nil
+end
+
+-- Walk doc.blocks once, following BODY_ORDER: divs that were found are
+-- copied through as-is (along with anything interleaved before them, e.g. a
+-- header div still sitting in front of ::: from :::); divs that are missing
+-- but have a generic/<class>.qmd fallback are synthesized right there, in
+-- their canonical position relative to the divs that do exist. Classes with
+-- no fallback (from, body, or any without a generic file) are simply left
+-- absent, same as today — validate.lua still catches a genuinely missing
+-- required div.
+local function fill_missing_body_divs(doc)
+  local new_blocks = {}
+  local idx = 1
+  for _, class in ipairs(BODY_ORDER) do
+    if seen[class] then
+      while idx <= #doc.blocks do
+        local block = doc.blocks[idx]
+        idx = idx + 1
+        table.insert(new_blocks, block)
+        if block.t == 'Div' and block.classes:includes(class) then
+          break
+        end
+      end
+    elseif FALLBACK_CLASSES[class] then
+      local blocks = load_generic(class)
+      if blocks then
+        table.insert(new_blocks, pandoc.Div(blocks, pandoc.Attr('', { class })))
+      end
+    end
+  end
+  while idx <= #doc.blocks do
+    table.insert(new_blocks, doc.blocks[idx])
+    idx = idx + 1
+  end
+  doc.blocks = new_blocks
+end
+
+-- Inject the extracted values into document metadata so layout templates can
+-- reference $page-header$ and $page-footer$; fill in any of
+-- date/to/subject/ref/opening/closing/signature missing from the document,
+-- in their canonical position; then do the same for header/footer, which
+-- instead prepend/append (they sit outside the from…signature sequence).
+--
+-- This filter is shared by the lettre, compte-rendu and document extensions,
+-- but this whole fallback vocabulary (date/to/subject/... and the generic-
+-- layout header/footer) is lettre's own — compte-rendu and document use
+-- different div classes (or none at all) and must not have lettre content
+-- spliced into them. A ::: from ::: div is unique to (and required by)
+-- lettre documents, so its presence is used as a reliable, format-agnostic
+-- signal instead of inspecting metadata like `base-format` (whose value is
+-- inconsistent across lettre's own output formats).
 function Pandoc(doc)
   for key, value in pairs(extracted) do
     doc.meta[key] = value
   end
 
-  for _, class in ipairs({ 'header', 'footer' }) do
-    if not seen[class] then
-      local path = find_generic_layout(class)
-      if path then
-        local blocks = read_generic_layout(path)
-        if blocks and #blocks > 0 then
+  if seen['from'] then
+    fill_missing_body_divs(doc)
+
+    for _, class in ipairs({ 'header', 'footer' }) do
+      if not seen[class] then
+        local blocks = load_generic(class)
+        if blocks then
           local div = apply_section(class, blocks, doc)
           if div then
             if class == 'header' then
