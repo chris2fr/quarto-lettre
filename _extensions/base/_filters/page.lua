@@ -289,6 +289,57 @@ local function find_part(class)
   return nil
 end
 
+-- `quarto add` has no post-install hook, so there's no way to scaffold
+-- _parts/ right when the extension is installed. Approximate it instead: the
+-- first time a lettre document is rendered somewhere without a _parts/
+-- directory yet, populate one (project root if there is a project, else next
+-- to the document) with a copy of every part this extension can fall back
+-- on, so the user has real, editable files to start from. Never touches an
+-- existing _parts/ (even an empty one), so this only ever fires once.
+local function scaffold_parts()
+  if not PANDOC_SCRIPT_FILE then return end
+  local base_dir
+  if quarto and quarto.project and quarto.project.directory and quarto.project.directory ~= '' then
+    base_dir = quarto.project.directory
+  elseif PANDOC_STATE and PANDOC_STATE.input_files and #PANDOC_STATE.input_files > 0 then
+    base_dir = pandoc.path.directory(PANDOC_STATE.input_files[1])
+  end
+  if not base_dir then return end
+
+  local parts_dir = pandoc.path.join({ base_dir, '_parts' })
+  if pcall(pandoc.system.list_directory, parts_dir) then return end
+
+  local generic_dir = pandoc.path.join({
+    pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', 'parts', 'generic'
+  })
+  local ok, files = pcall(pandoc.system.list_directory, generic_dir)
+  if not ok then return end
+
+  local copied = false
+  for _, name in ipairs(files) do
+    local class = name:match('^(.*)%.qmd$')
+    if class and FALLBACK_CLASSES[class] then
+      local src = io.open(pandoc.path.join({ generic_dir, name }), 'r')
+      if src then
+        local content = src:read('a')
+        src:close()
+        if not copied then
+          pandoc.system.make_directory(parts_dir, true)
+          copied = true
+        end
+        local dst = io.open(pandoc.path.join({ parts_dir, name }), 'w')
+        if dst then
+          dst:write(content)
+          dst:close()
+        end
+      end
+    end
+  end
+  if copied then
+    io.stderr:write('[lettre] _parts/ créé avec les sections par défaut, éditables librement : ' .. parts_dir .. '\n')
+  end
+end
+
 -- Expand `{{< meta key >}}` shortcodes by hand: the file is read and parsed
 -- straight from disk (outside quarto's own document pipeline), so its raw
 -- text never goes through quarto's shortcode-resolution pass the way the
@@ -397,6 +448,7 @@ function Pandoc(doc)
   end
 
   if is_lettre then
+    scaffold_parts()
     fill_missing_body_divs(doc)
 
     for _, class in ipairs({ 'header', 'footer' }) do
