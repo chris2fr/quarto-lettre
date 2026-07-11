@@ -13,7 +13,7 @@ local french_quotes = false
 local is_lettre = false
 
 -- Whether an actual div was found for each fallback-eligible class while
--- walking the document (see find_generic_layout further down).
+-- walking the document (see find_part further down).
 local seen = {}
 
 -- Quarto can run several output formats of the same document through one
@@ -250,21 +250,41 @@ function Div(el)
   end
 end
 
--- The base extension ships a generic default header/footer under its own
--- layout/generic/ directory. When the document itself has no
--- ::: header/footer ::: div, fall back to that file's content, resolved
--- relative to this filter script's own location (base/_filters/page.lua →
--- base/layout/generic/<class>.qmd) so it works regardless of which project
--- or document is being rendered.
-local function find_generic_layout(class)
-  if not PANDOC_SCRIPT_FILE then return nil end
-  local path = pandoc.path.join({
-    pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', 'layout', 'generic', class .. '.qmd'
-  })
-  local f = io.open(path, 'r')
-  if f then
-    f:close()
-    return path
+-- Resolve a "part" (the fallback content for one section class), checking
+-- in priority order:
+--   1. ./_parts/<class>.qmd next to the document being rendered — lets a
+--      single document override a section without touching the project.
+--   2. <project root>/_parts/<class>.qmd (the directory holding _quarto.yml)
+--      — a project-wide override, e.g. shared by every letter in a project.
+--   3. the base extension's own bundled default, resolved relative to this
+--      filter script's own location (base/_filters/page.lua →
+--      base/parts/generic/<class>.qmd) so it works regardless of which
+--      project or document is being rendered.
+-- The first one found wins: a _parts/ file always takes precedence over the
+-- extension's own default.
+local function find_part(class)
+  local candidates = {}
+  if PANDOC_STATE and PANDOC_STATE.input_files and #PANDOC_STATE.input_files > 0 then
+    table.insert(candidates, pandoc.path.join({
+      pandoc.path.directory(PANDOC_STATE.input_files[1]), '_parts', class .. '.qmd'
+    }))
+  end
+  if quarto and quarto.project and quarto.project.directory and quarto.project.directory ~= '' then
+    table.insert(candidates, pandoc.path.join({
+      quarto.project.directory, '_parts', class .. '.qmd'
+    }))
+  end
+  if PANDOC_SCRIPT_FILE then
+    table.insert(candidates, pandoc.path.join({
+      pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', 'parts', 'generic', class .. '.qmd'
+    }))
+  end
+  for _, path in ipairs(candidates) do
+    local f = io.open(path, 'r')
+    if f then
+      f:close()
+      return path
+    end
   end
   return nil
 end
@@ -281,10 +301,10 @@ local function expand_meta_shortcodes(text)
   end))
 end
 
--- Read a generic layout .qmd, strip any YAML front matter, expand `{{< meta
--- ... >}}` shortcodes, and parse it into blocks the same way a
--- ::: header/footer ::: div's content would arrive.
-local function read_generic_layout(path)
+-- Read a part .qmd, strip any YAML front matter, expand `{{< meta ... >}}`
+-- shortcodes, and parse it into blocks the same way a ::: header/footer :::
+-- div's content would arrive.
+local function read_part_file(path)
   local f = io.open(path, 'r')
   if not f then return nil end
   local text = f:read('a')
@@ -294,11 +314,11 @@ local function read_generic_layout(path)
   return pandoc.read(text, 'markdown').blocks
 end
 
--- Load a class's generic/<class>.qmd, if any, already parsed into blocks.
-local function load_generic(class)
-  local path = find_generic_layout(class)
+-- Load a class's part file, if any, already parsed into blocks.
+local function load_part(class)
+  local path = find_part(class)
   if not path then return nil end
-  local blocks = read_generic_layout(path)
+  local blocks = read_part_file(path)
   if blocks and #blocks > 0 then return blocks end
   return nil
 end
@@ -355,7 +375,7 @@ local function fill_missing_body_divs(doc)
       table.insert(new_blocks, pandoc.Div(loose, pandoc.Attr('', { 'body' })))
       seen['body'] = true
     elseif FALLBACK_CLASSES[class] then
-      local blocks = load_generic(class)
+      local blocks = load_part(class)
       if blocks then
         table.insert(new_blocks, pandoc.Div(blocks, pandoc.Attr('', { class })))
       end
@@ -381,7 +401,7 @@ function Pandoc(doc)
 
     for _, class in ipairs({ 'header', 'footer' }) do
       if not seen[class] then
-        local blocks = load_generic(class)
+        local blocks = load_part(class)
         if blocks then
           local div = apply_section(class, blocks, doc)
           if div then
