@@ -1,29 +1,22 @@
-logo: 
-  small: images/logo-lesgrandsvoisins-900-150-white.png
-  medium: images/logo-lesgrandsvoisins-900-150-white.png
-  large: images/logo-lesgrandsvoisins-900-150-white.png
-
+# minimal brand.yml enabling dark mode
+# replace with your brand colors, logos, and typography!
 meta:
   name: Les Grands Voisins
-  link: https://www.lesgrandsvoisins.com
-
-# color:
-#   palette:
-#     dark-grey: "#222222"
-#     blue: "#ddeaf1"
-#   foreground: 
-#     light: dark-grey
-#     dark: blue
-#   background: 
-#     light: blue
-#     dark: dark-grey
-#   primary: 
-#     light: black
-#     dark: white
-  
-# typography:
-#   fonts:
-#     - family: Jura
-#       source: google
-#   base: Jura
-#   headings: Jura
+  url: https://www.lesgrandsvoisins.com
+logo: 
+  small: logo/logo-lesgrandsvoisins-300-50-white.png
+  medium: logo/logo-lesgrandsvoisins-600-100-white.png
+  large: logo/logo-lesgrandsvoisins-900-150-white.png
+typography:
+  fonts:
+    - family: Jura
+      source: google
+  base: Jura
+  headings: Jura
+color:
+  background:
+    light: "#eee"
+    dark: "#000"
+  foreground:
+    light: "#000"
+    dark: "#eee"
