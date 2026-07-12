@@ -1,131 +1,138 @@
 ---
-title: Objet de la lettre
-author: Prénom Nom
-ref: ref-YYYY-MM-DD
-date: today
+title: Test complet — Extension « Document »
+subtitle: Vérification de tous les éléments de mise en forme
+author: Chris Mann
+date: 2026-06-07
 lang: fr
-place: Paris
+# bibliography: biblio.bib
+# maring-all: 20mm
+# marginx: 20mm
+# marginy: 20mm
+# margin-inner: 20mm
+# margin-outer: 20mm
+# margin-top: 25mm
+# margin-bottom: 15mm
 format:
-  lettre-html: 
-    output-file: template-lettre.html
-  lettre-pdf: 
-    output-file: template-lettre.pdf
-  lettre-typst: 
-    output-file: template-lettre-typst.pdf
-  lettre-docx: 
-    output-file: template-lettre.docx
-  lettre-odt: 
-    output-file: template-lettre.odt
-  lettre-md: 
-    output-file: template-lettre.md
-  lettre-plain: 
-    output-file: template-lettre.txt
-  compte-rendu-html: 
-    output-file: template-compte-rendu.html
-  compte-rendu-pdf: 
-    output-file: template-compte-rendu.pdf
-  compte-rendu-typst: 
-    output-file: template-compte-rendu-typst.pdf
-  compte-rendu-docx: 
-    output-file: template-compte-rendu.docx
-  compte-rendu-odt: 
-    output-file: template-compte-rendu.odt
-  compte-rendu-md: 
-    output-file: template-compte-rendu.md
-  compte-rendu-plain: 
-    output-file: template-compte-rendu.txt
-  document-html: 
-    output-file: template-document.html
-  document-pdf: 
-    output-file: template-document.pdf
-  document-typst: 
-    output-file: template-document-typst.pdf
-  document-docx: 
-    output-file: template-document.docx
-  document-odt: 
-    output-file: template-document.odt
-  document-md: 
-    output-file: template-document.md
-  document-plain: 
-    output-file: template-document.txt
+  document-html: default
+  document-pdf: default
+  document-typst:
+    output-file: document-typst.pdf
+  document-docx: default
+  document-md: default
+  document-plain: default
 ---
 
-::: header
-**Organisation**\
-Description courte
+# Niveau 1 — Introduction
+
+L'extension **Document** fournit un gabarit de mise en page pour des documents formels. Elle partage les filtres et la feuille de style de l'extension *Lettre*, mais sans la structure épistolaire.
+
+Logo intégré en tête de document :
+
+![Logo Les Grands Voisins](_parts/logo/logo-lesgrandsvoisins-900-150-white.png)
+
+Du texte en **gras**, en *italique*, en ***gras italique*** et du `code inline`. Un lien vers [Quarto](https://quarto.org) et une note de bas de page^[L'extension requiert Quarto 1.9 ou supérieur.].
+
+> Un bloc de citation pour illustrer la mise en forme d'un extrait ou d'une référence dans un document formel.
+
+# Niveau 1 — Listes
+
+Liste non ordonnée avec sous-éléments :
+
+- Format HTML — rendu dans le navigateur
+  - Thème personnalisé via CSS
+  - Mise en page à colonnes
+- Format PDF — rendu via LaTeX
+  - Classe `quarto-lettre.cls`
+  - Support A4 et lettre US
+- Format Typst — rendu natif
+- Format DOCX — compatible Microsoft Word
+- Format Markdown — sortie texte enrichi
+
+Liste ordonnée :
+
+1. Installer Quarto 1.9 ou supérieur
+2. Copier le dossier `_extensions/` dans le projet
+3. Créer un fichier `.qmd` avec les métadonnées requises
+4. Lancer `quarto render fichier.qmd`
+
+## Niveau 2 — Tableaux
+
+Tableau des formats supportés :
+
+| Extension | HTML | PDF | Typst | DOCX | ODT | Markdown | Texte |
+|:----------|:----:|:---:|:-----:|:----:|:---:|:--------:|:-----:|
+| lettre | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| compte-rendu | ✓ | ✓ | ✓ | — | — | ✓ | ✓ |
+| document | ✓ | ✓ | ✓ | ✓ | — | ✓ | ✓ |
+
+Image à largeur réduite insérée dans le flux du document :
+
+![Logo 50 %](_parts/logo/logo-lesgrandsvoisins-900-150-white.png){width=50%}
+
+## Niveau 2 — Blocs de code
+
+Configuration YAML minimale :
+
+```yaml
+---
+title: "Mon document"
+author: "Prénom Nom"
+date: today
+lang: fr
+format:
+  document-pdf: default
+  document-html: default
+---
+```
+
+Commande de rendu :
+
+```bash
+quarto render document.qmd
+```
+
+### Niveau 3 — Tableau de facturation
+
+::: {#tbl-budget .list-table aligns="l,r,r,r" width="100%"}
+Budget prévisionnel
+
+- - Poste
+  - Coût unitaire
+  - Quantité
+  - Total
+- - Développement
+  - 500 €
+  - 10
+  - 5 000 €
+- - Documentation
+  - 200 €
+  - 5
+  - 1 000 €
+- - Tests
+  - 150 €
+  - 8
+  - 1 200 €
+- - []{colspan=3 align="r" border-top="solid 1px"} **Total**
+  - **7 200 €**
 :::
 
-::: from
-{{< meta author >}}\
-Rue et numéro\
-Code postal Ville
-:::
+### Niveau 3 — Image avec légende
 
-::: date
-{{< meta place >}}, le {{< meta date >}}
-:::
+![Logo Les Grands Voisins — format original](_parts/logo/logo-lesgrandsvoisins-900-150-white.png)
 
-::: to
-Destinataire\
-Organisation\
-Rue et numéro\
-Code postal Ville
-:::
+#### Niveau 4 — Filtres Lua
 
-::: subject
-**{{< meta title >}}**
-:::
+Les filtres Lua permettent d'adapter le rendu selon le format de sortie cible. Exemple de filtre :
 
-::: ref
-réf. {{< meta ref >}}
-:::
+```lua
+function Image(el)
+  if FORMAT == "latex" then
+    el.attributes["width"] = "\\linewidth"
+  end
+  return el
+end
+```
 
-::: opening
-Madame, Monsieur,
-:::
+#### Niveau 4 — Métadonnées YAML
 
-::: participants
-- Participant 1
-- Participant 2
-:::
-
-::: agenda
-1. Point 1
-2. Point 2
-:::
-
-::: decisions
-- Décision 1
-- Décision 2
-:::
-
-::: actions
-- Action 1
-- Action 2
-:::
-
-::: next-meeting
-- Date de la prochaine réunion
-:::
-
-::: approval
-Compte-rende en attente d'approbation.
-:::
-
-
-Corps de la lettre ou du compte-rendu.
-
-
-::: closing
-Veuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.
-:::
-
-::: signature
-{{< meta author >}}
-:::
-
-
-::: footer
-Téléphone --- courriel@example.com\
-Adresse --- Code postal Ville
-:::
+Les métadonnées `title`, `subtitle`, `author` et `date` sont injectées dans le gabarit par Pandoc. La variable `lang` contrôle la localisation des éléments automatiques (date, bibliographie, etc.).
