@@ -3,10 +3,12 @@ local extracted = {}
 
 local french_quotes = false
 
--- This filter is shared by the lettre, compte-rendu and document extensions,
--- but the generic-layout fallback (further down) is lettre's own vocabulary —
+-- This filter is shared by the lettre, compte-rendu and document extensions.
+-- ::: header ::: / ::: footer ::: and their _parts/ fallback (further down)
+-- are common to all three. The rest of the fallback vocabulary
+-- (from/date/to/subject/ref/opening/closing/signature) is lettre's own —
 -- compte-rendu and document use different div classes (or none at all) and
--- must not have lettre content spliced into them.
+-- must not have that content spliced into them.
 -- quarto.format.format_identifier()['extension-name'] reliably names the
 -- extension supplying the current output format, for every format
 -- (unlike `base-format` in doc.meta, which is inconsistent for `md`).
@@ -291,12 +293,14 @@ end
 
 -- `quarto add` has no post-install hook, so there's no way to scaffold
 -- _parts/ right when the extension is installed. Approximate it instead: the
--- first time a lettre document is rendered somewhere without a _parts/
--- directory yet, populate one (project root if there is a project, else next
--- to the document) with a copy of every part this extension can fall back
--- on, so the user has real, editable files to start from. Never touches an
--- existing _parts/ (even an empty one), so this only ever fires once.
-local function scaffold_parts()
+-- first time a document is rendered somewhere without a _parts/ directory
+-- yet, populate one (project root if there is a project, else next to the
+-- document) with a copy of every part in `classes` this extension can fall
+-- back on, so the user has real, editable files to start from. Never touches
+-- an existing _parts/ (even an empty one), so this only ever fires once.
+-- `classes` is HEADER_FOOTER for compte-rendu/document (they only support
+-- header/footer parts) and FALLBACK_CLASSES for lettre (the full set).
+local function scaffold_parts(classes)
   if not PANDOC_SCRIPT_FILE then return end
   local base_dir
   if quarto and quarto.project and quarto.project.directory and quarto.project.directory ~= '' then
@@ -318,7 +322,7 @@ local function scaffold_parts()
   local copied = false
   for _, name in ipairs(files) do
     local class = name:match('^(.*)%.qmd$')
-    if class and FALLBACK_CLASSES[class] then
+    if class and classes[class] then
       local src = io.open(pandoc.path.join({ generic_dir, name }), 'r')
       if src then
         local content = src:read('a')
@@ -336,7 +340,7 @@ local function scaffold_parts()
     end
   end
   if copied then
-    io.stderr:write('[lettre] _parts/ créé avec les sections par défaut, éditables librement : ' .. parts_dir .. '\n')
+    io.stderr:write('[quarto-lettre] _parts/ créé avec les sections par défaut, éditables librement : ' .. parts_dir .. '\n')
   end
 end
 
@@ -452,32 +456,59 @@ local function fill_missing_body_divs(doc)
   doc.blocks = new_blocks
 end
 
+-- Fill in the per-side margin-inner/margin-outer/margin-top/margin-bottom
+-- keys (consumed as-is by every extension's pdf/layout.tex \geometry calls)
+-- from the coarser marginx/marginy/margin-all keys, when the more specific
+-- one isn't already set by the document. Priority, most to least specific:
+--   margin-inner / margin-outer / margin-top / margin-bottom  (untouched if set)
+--   marginx (→ inner & outer) / marginy (→ top & bottom)
+--   margin-all (→ all four)
+-- Note: the bare key `margin` is reserved by Quarto itself (revealjs/typst
+-- slide margin, must be a number) — using it here would fail YAML
+-- validation for a string like "20mm", hence `margin-all`.
+-- PDF-only: these feed LaTeX \geometry values and have no meaning elsewhere.
+-- Applies to all three extensions alike (not gated by is_lettre), since the
+-- margin-inner/outer/top/bottom mechanism itself already is shared.
+local function resolve_margins(doc)
+  if not FORMAT:match('latex') then return end
+  local margin  = doc.meta['margin-all']
+  local marginx = doc.meta['marginx'] or margin
+  local marginy = doc.meta['marginy'] or margin
+  if not doc.meta['margin-inner']  and marginx then doc.meta['margin-inner']  = marginx end
+  if not doc.meta['margin-outer']  and marginx then doc.meta['margin-outer']  = marginx end
+  if not doc.meta['margin-top']    and marginy then doc.meta['margin-top']    = marginy end
+  if not doc.meta['margin-bottom'] and marginy then doc.meta['margin-bottom'] = marginy end
+end
+
 -- Inject the extracted values into document metadata so layout templates can
--- reference $page-header$ and $page-footer$; fill in any of
+-- reference $page-header$ and $page-footer$; resolve margin fallbacks (see
+-- resolve_margins); scaffold/fall back to _parts/header.qmd and
+-- _parts/footer.qmd for every extension; then, lettre only, fill in any of
 -- from/date/to/subject/ref/opening/closing/signature missing from the
--- document, in their canonical position; then do the same for header/footer,
--- which instead prepend/append (they sit outside the from…signature
--- sequence). Restricted to the lettre extension — see `is_lettre` above.
+-- document, in their canonical position (see `is_lettre` above).
 function Pandoc(doc)
   for key, value in pairs(extracted) do
     doc.meta[key] = value
   end
 
-  if is_lettre then
-    scaffold_parts()
-    fill_missing_body_divs(doc)
+  resolve_margins(doc)
 
-    for _, class in ipairs({ 'header', 'footer' }) do
-      if not seen[class] then
-        local blocks = load_part(class)
-        if blocks then
-          local div = apply_section(class, blocks, doc)
-          if div then
-            if class == 'header' then
-              table.insert(doc.blocks, 1, div)
-            else
-              table.insert(doc.blocks, div)
-            end
+  scaffold_parts(is_lettre and FALLBACK_CLASSES or HEADER_FOOTER)
+
+  if is_lettre then
+    fill_missing_body_divs(doc)
+  end
+
+  for _, class in ipairs({ 'header', 'footer' }) do
+    if not seen[class] then
+      local blocks = load_part(class)
+      if blocks then
+        local div = apply_section(class, blocks, doc)
+        if div then
+          if class == 'header' then
+            table.insert(doc.blocks, 1, div)
+          else
+            table.insert(doc.blocks, div)
           end
         end
       end

@@ -110,7 +110,9 @@ Any div listed as "falls back to a part" above can be left out of the document e
 
 The first one found wins, so a project- or document-level `_parts/<div>.qmd` always takes precedence over the extension's default. Part files are plain Markdown and support `{{< meta key >}}` and `{{< brand logo <size> >}}` shortcodes.
 
-Since `quarto add` has no post-install hook to scaffold `_parts/` automatically, the extension does the next best thing: the first time a lettre document is rendered in a project (or standalone file) that has no `_parts/` yet, one is created — at the project root if there's a `_quarto.yml`, next to the document otherwise — populated with an editable copy of every fallback-eligible part. An existing `_parts/` (even an empty one, or one missing some files) is never touched again, so this only ever runs once and never overwrites customizations.
+`::: header` / `::: footer` and their `_parts/header.qmd` / `_parts/footer.qmd` fallback work the same way in `compte-rendu` and `document` — a single `_parts/header.qmd` at the project root gives every letter, meeting minutes, and document in the project the same letterhead and footer. The rest of the fallback vocabulary (`from`, `date`, `to`, `subject`, `ref`, `opening`, `closing`, `signature`) is specific to `lettre`.
+
+Since `quarto add` has no post-install hook to scaffold `_parts/` automatically, the extension does the next best thing: the first time a document is rendered in a project (or standalone file) that has no `_parts/` yet, one is created — at the project root if there's a `_quarto.yml`, next to the document otherwise — populated with an editable copy of every fallback-eligible part for that extension (just `header.qmd`/`footer.qmd` for `compte-rendu`/`document`; the full set for `lettre`). An existing `_parts/` (even an empty one, or one missing some files) is never touched again, so this only ever runs once and never overwrites customizations.
 
 ---
 
@@ -149,6 +151,8 @@ format:
 | `::: approval` | Approval statement |
 | `::: footer` | Page footer — printed on every page |
 
+`::: header` and `::: footer` can be omitted — see "`_parts/` — overriding or omitting a section" under `lettre` above (the rest of this table has no fallback here; unlike `lettre`, a missing `::: participants` or `::: body` is still an error).
+
 ---
 
 ## document
@@ -171,27 +175,39 @@ format:
 ---
 ```
 
-No special divs — use standard Markdown headings (H1–H4), paragraphs, tables, lists, and images directly in the document body.
+No special divs — use standard Markdown headings (H1–H4), paragraphs, tables, lists, and images directly in the document body. It does, however, support `::: header` and `::: footer`, with the same `_parts/` fallback as `compte-rendu` above — omit them and the page header/footer come from `_parts/header.qmd` / `_parts/footer.qmd` if present.
 
 ---
 
 ## PDF margin overrides
 
-All three extensions support per-document margin overrides for PDF output via YAML metadata:
+All three extensions support per-document margin overrides for PDF output via YAML metadata, at three levels of granularity — the most specific one set wins:
 
-| Key | Default | Applies to |
+| Key | Sets | Default |
 |---|---|---|
-| `margin-inner` | `20mm` | All pages (inner / left) |
-| `margin-outer` | `20mm` | All pages (outer / right) |
-| `margin-top` | `25mm` | Body pages only |
-| `margin-bottom` | `15mm` | Body pages only |
+| `margin-inner` | inner / left margin, all pages | `20mm` |
+| `margin-outer` | outer / right margin, all pages | `20mm` |
+| `margin-top` | top margin, body pages only | `25mm` |
+| `margin-bottom` | bottom margin, body pages only | `15mm` |
+| `marginx` | `margin-inner` **and** `margin-outer`, if not set individually | — |
+| `marginy` | `margin-top` **and** `margin-bottom`, if not set individually | — |
+| `margin-all` | all four, if not set by any of the above | — |
 
 ```yaml
-margin-inner: 25mm
-margin-outer: 25mm
+# every page gets 15mm on the sides; top/bottom keep their defaults
+marginx: 15mm
+
+# same as writing all four margin-* keys explicitly
+margin-all: 18mm
+
+# margin-top wins over marginy, which wins over margin-all — bottom falls
+# back to margin-all since neither margin-bottom nor marginy set it
+margin-all: 10mm
+marginy: 15mm
 margin-top: 30mm
-margin-bottom: 20mm
 ```
+
+> `margin` (without a suffix) is reserved by Quarto itself (revealjs/typst slide margin, must be a number) — use `margin-all` instead for a plain string like `"20mm"`.
 
 These can be set at the document level (affects all PDF formats) or under a specific format:
 
@@ -233,9 +249,9 @@ quarto render my-letter.qmd
 ```
 _extensions/
 ├── base/                          # Shared resources (not a format)
-│   ├── _filters/page.lua          # ::: header/footer :::, part fallback (lettre only), quote style
-│   ├── parts/                     # lettre's bundled default section content (see _parts/ above)
-│   │   └── <div>.qmd              # e.g. from.qmd, date.qmd, header.qmd, footer.qmd...
+│   ├── _filters/page.lua          # ::: header/footer :::, part fallback (all 3), lettre-only body/margins, quote style
+│   ├── parts/                     # bundled default section content (see _parts/ above)
+│   │   └── <div>.qmd              # header.qmd, footer.qmd (all 3); from/date/... (lettre only)
 │   ├── md/
 │   │   ├── _filters/tables.lua    # Markdown table filter
 │   │   └── layout.md              # Markdown template
