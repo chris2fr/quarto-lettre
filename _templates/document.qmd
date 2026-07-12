@@ -1,0 +1,130 @@
+---
+title: Test complet — Extension « Document »
+subtitle: Vérification de tous les éléments de mise en forme
+author: Chris Mann
+date: 2026-06-07
+lang: fr
+format:
+  document-html: default
+  document-pdf: default
+  document-typst:
+    output-file: document-typst.pdf
+  document-docx: default
+  document-md: default
+  document-plain: default
+---
+
+# Niveau 1 — Introduction
+
+L'extension **Document** fournit un gabarit de mise en page pour des documents formels. Elle partage les filtres et la feuille de style de l'extension *Lettre*, mais sans la structure épistolaire.
+
+Logo intégré en tête de document :
+
+![Logo Les Grands Voisins](logo-lesgrandsvoisins-900-150-white.png)
+
+Du texte en **gras**, en *italique*, en ***gras italique*** et du `code inline`. Un lien vers [Quarto](https://quarto.org) et une note de bas de page^[L'extension requiert Quarto 1.9 ou supérieur.].
+
+> Un bloc de citation pour illustrer la mise en forme d'un extrait ou d'une référence dans un document formel.
+
+# Niveau 1 — Listes
+
+Liste non ordonnée avec sous-éléments :
+
+- Format HTML — rendu dans le navigateur
+  - Thème personnalisé via CSS
+  - Mise en page à colonnes
+- Format PDF — rendu via LaTeX
+  - Classe `quarto-lettre.cls`
+  - Support A4 et lettre US
+- Format Typst — rendu natif
+- Format DOCX — compatible Microsoft Word
+- Format Markdown — sortie texte enrichi
+
+Liste ordonnée :
+
+1. Installer Quarto 1.9 ou supérieur
+2. Copier le dossier `_extensions/` dans le projet
+3. Créer un fichier `.qmd` avec les métadonnées requises
+4. Lancer `quarto render fichier.qmd`
+
+## Niveau 2 — Tableaux
+
+Tableau des formats supportés :
+
+| Extension | HTML | PDF | Typst | DOCX | ODT | Markdown | Texte |
+|:----------|:----:|:---:|:-----:|:----:|:---:|:--------:|:-----:|
+| lettre | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| compte-rendu | ✓ | ✓ | ✓ | — | — | ✓ | ✓ |
+| document | ✓ | ✓ | ✓ | ✓ | — | ✓ | ✓ |
+
+Image à largeur réduite insérée dans le flux du document :
+
+![Logo 50 %](logo-lesgrandsvoisins-900-150-white.png){width=50%}
+
+## Niveau 2 — Blocs de code
+
+Configuration YAML minimale :
+
+```yaml
+---
+title: "Mon document"
+author: "Prénom Nom"
+date: today
+lang: fr
+format:
+  document-pdf: default
+  document-html: default
+---
+```
+
+Commande de rendu :
+
+```bash
+quarto render document.qmd
+```
+
+### Niveau 3 — Tableau de facturation
+
+::: {#tbl-budget .list-table aligns="l,r,r,r" width="100%"}
+Budget prévisionnel
+
+- - Poste
+  - Coût unitaire
+  - Quantité
+  - Total
+- - Développement
+  - 500 €
+  - 10
+  - 5 000 €
+- - Documentation
+  - 200 €
+  - 5
+  - 1 000 €
+- - Tests
+  - 150 €
+  - 8
+  - 1 200 €
+- - []{colspan=3 align="r" border-top="solid 1px"} **Total**
+  - **7 200 €**
+:::
+
+### Niveau 3 — Image avec légende
+
+![Logo Les Grands Voisins — format original](logo-lesgrandsvoisins-900-150-white.png)
+
+#### Niveau 4 — Filtres Lua
+
+Les filtres Lua permettent d'adapter le rendu selon le format de sortie cible. Exemple de filtre :
+
+```lua
+function Image(el)
+  if FORMAT == "latex" then
+    el.attributes["width"] = "\\linewidth"
+  end
+  return el
+end
+```
+
+#### Niveau 4 — Métadonnées YAML
+
+Les métadonnées `title`, `subtitle`, `author` et `date` sont injectées dans le gabarit par Pandoc. La variable `lang` contrôle la localisation des éléments automatiques (date, bibliographie, etc.).

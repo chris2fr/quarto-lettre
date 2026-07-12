@@ -1,0 +1,168 @@
+---
+title: Test complet — Extension « Lettre »
+author: Chris Mann
+ref: test-lettre-2026-06-07
+date: 2026-06-07
+lang: fr
+place: Paris
+bibliography: biblio.bib
+# margin-inner: 20mm
+# margin-outer: 20mm
+# margin-top: 25mm
+# margin-bottom: 15mm
+format:
+  lettre-html: default
+  lettre-pdf: default
+  lettre-typst:
+    output-file: lettre-typst.pdf
+  lettre-docx: default
+  lettre-odt: default
+  lettre-md: default
+  lettre-plain: default
+---
+
+::: header
+[![Les Grands Voisins — Association d'intérêt général](logo-lesgrandsvoisins-900-150-white.png)](https://www.lesgrandsvoisins.com)
+:::
+
+::: from
+{{< meta author >}}\
+7 place de l'Église\
+92260 Fontenay-aux-Roses
+:::
+
+::: date
+{{< meta place >}}, le {{< meta date >}}
+:::
+
+::: to
+Le développeur Quarto\
+À qui de droit
+:::
+
+::: subject
+## {{< meta title >}}
+:::
+
+::: ref
+réf. {{< meta ref >}}
+:::
+
+::: opening
+Madame, Monsieur,
+:::
+
+::: body
+La présente "lettre" teste l'ensemble des fonctionnalités de l'extension **Lettre**^[Un format de lettre français pour Quarto.] pour [Quarto](https://quarto.org). Elle couvre tous les éléments de mise en forme, quatre niveaux de titres et des images intégrées[@something].
+
+# Niveau 1 — Présentation générale
+
+L'extension "**Lettre**" permet de rédiger des lettres formelles en *Markdown* et de les exporter vers sept formats de sortie simultanément. Voici un exemple de logo intégré dans le corps :
+
+![Logo Les Grands Voisins](logo-lesgrandsvoisins-900-150-white.png)
+
+> Une citation mise en valeur dans un bloc. Elle peut s'étendre sur plusieurs lignes et illustre la mise en forme d'un extrait ou d'une référence.
+
+## Niveau 2 — Mise en forme du texte
+
+Du texte en **gras**, en *italique*, en ***gras italique***, et du `code inline`. Un lien vers [Quarto](https://quarto.org) et une note de bas de page^[Ceci est une deuxième note de bas de page.].
+
+Liste non ordonnée :
+
+- Élément A
+- Élément B
+  - Sous-élément B1
+  - Sous-élément B2
+- Élément C
+
+Liste ordonnée[@otherthing] :
+
+1. Premier point
+2. Deuxième point
+3. Troisième point
+
+## Niveau 2 — Tableaux
+
+Tableau standard :
+
+| Div | Rôle |
+|:----|:-----|
+| `::: header` | En-tête de page |
+| `::: from` | Coordonnées expéditeur |
+| `::: to` | Adresse destinataire |
+| `::: body` | Corps de la lettre |
+
+Image réduite à 40 % de la largeur :
+
+![Logo réduit](logo-lesgrandsvoisins-900-150-white.png){width=40%}
+
+### Niveau 3 — Tableau de facturation
+
+::: {#tbl-facture .list-table aligns="l,c,c,r" width="100%"}
+Facture de test
+
+- - Description
+  - Prix unitaire
+  - Quantité
+  - Total
+- - Prestation A
+  - 100 €
+  - 2
+  - 200 €
+- - Prestation B
+  - 50 €
+  - 3
+  - 150 €
+- - []{colspan=3 align="r" border-top="solid 1px"} **Total**
+  - **350 €**
+:::
+
+### Niveau 3 — Bloc de code
+
+Configuration YAML de l'extension :
+
+```yaml
+format:
+  lettre-html: default
+  lettre-pdf: default
+  lettre-typst: default
+  lettre-docx: default
+  lettre-odt: default
+  lettre-md: default
+  lettre-plain: default
+```
+
+Commande de rendu :
+
+```bash
+quarto render lettre.qmd
+```
+
+#### Niveau 4 — Notes techniques
+
+L'extension requiert **Quarto 1.9** ou supérieur. Les métadonnées YAML (`title`, `author`, `ref`, `lang`, `place`, `date`) sont réutilisables dans le document via `{{{< meta clé >}}}`.
+
+Extrait de code Lua :
+
+```lua
+function Div(el)
+  if el.classes:includes("body") then
+    return el.content
+  end
+end
+```
+:::
+
+::: closing
+En espérant que cette extension vous sera utile, je reste à votre disposition pour toute question ou suggestion, et vous adresse mes cordiales salutations.
+:::
+
+::: signature
+{{< meta author >}}
+:::
+
+::: footer
+[+33 7 81 81 18 11](tel:+33781811811) --- [chris@lesgrandsvoisins.com](mailto:chris@lesgrandsvoisins.com)\
+Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS\
+Association d'intérêt général de loi 1901 RNA W751240710 SIREN 832760102
+:::

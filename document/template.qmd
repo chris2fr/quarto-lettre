@@ -1,0 +1,35 @@
+---
+title: Objet de la lettre
+author: Prénom Nom
+ref: ref-YYYY-MM-DD
+date: today
+lang: fr
+place: Paris
+format:
+  document-html: 
+    output-file: template-document.html
+  document-pdf: 
+    output-file: template-document.pdf
+  document-typst: 
+    output-file: template-document-typst.pdf
+  document-docx: 
+    output-file: template-document.docx
+  document-odt: 
+    output-file: template-document.odt
+  document-md: 
+    output-file: template-document.md
+  document-plain: 
+    output-file: template-document.txt
+---
+
+::: header
+**Organisation**\
+Description courte
+:::
+
+Corps du document.
+
+::: footer
+Téléphone --- courriel@example.com\
+Adresse --- Code postal Ville
+:::

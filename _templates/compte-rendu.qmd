@@ -1,0 +1,139 @@
+---
+title: Test complet — Extension « Compte-rendu »
+author: Chris Mann
+date: 2026-06-07
+place: Paris
+organization: Les Grands Voisins
+lang: fr
+format:
+  compte-rendu-html: default
+  compte-rendu-pdf: default
+  compte-rendu-typst:
+    output-file: compte-rendu-typst.pdf
+  compte-rendu-md: default
+  compte-rendu-plain: default
+---
+
+::: header
+![**Les Grands Voisins** --- Association d'intérêt général](logo-lesgrandsvoisins-900-150-white.png)
+:::
+
+::: participants
+**Présents :** Alice Dupont, Bob Martin, Claire Leroy
+
+**Excusés :** David Petit
+:::
+
+::: agenda
+1. Actualités du projet
+2. Revue des fonctionnalités
+3. Prochaines étapes
+:::
+
+::: body
+
+# Point 1 — Actualités du projet
+
+L'extension **Compte-rendu** permet de structurer des comptes-rendus de réunion en *Markdown* et de les exporter vers plusieurs formats. Ce document teste l'ensemble des fonctionnalités disponibles.
+
+Logo intégré dans le corps des notes :
+
+![Logo Les Grands Voisins](logo-lesgrandsvoisins-900-150-white.png)
+
+> Alice rappelle que la prochaine version de l'extension sera compatible avec Quarto 2.0.
+
+## Sous-point 1.1 — Avancement technique
+
+Le tableau ci-dessous résume l'état d'avancement par format de sortie :
+
+| Format | État | Responsable |
+|:-------|:----:|:-----------:|
+| PDF | Stable | Chris Mann |
+| HTML | Stable | Chris Mann |
+| Typst | Beta | Chris Mann |
+| Markdown | Stable | Chris Mann |
+
+Liste des tâches en cours :
+
+- Correction du filtre Lua pour les tableaux complexes
+  - Alignement des colonnes
+  - Fusion de cellules
+- Mise à jour de la documentation
+- Tests d'intégration automatisés
+
+## Sous-point 1.2 — Image réduite
+
+![Logo 40 %](logo-lesgrandsvoisins-900-150-white.png){width=40%}
+
+Texte en **gras**, en *italique*, `code inline` et lien vers [Quarto](https://quarto.org).
+
+# Point 2 — Revue des fonctionnalités
+
+Présentation des fonctionnalités testées dans ce document. La numérotation suit l'ordre du compte-rendu.
+
+## Niveau 2 — Éléments de mise en forme
+
+Bloc de code YAML :
+
+```yaml
+format:
+  compte-rendu-html: default
+  compte-rendu-pdf: default
+  compte-rendu-typst: default
+```
+
+Liste ordonnée des étapes de rendu :
+
+1. Lecture du fichier `.qmd`
+2. Passage par les filtres Lua
+3. Application du gabarit
+4. Génération du fichier de sortie
+
+### Niveau 3 — Détails du filtre
+
+Le filtre `divs.lua` transforme les div Pandoc en environnements natifs selon le format de sortie cible.
+
+#### Niveau 4 — Extrait Lua
+
+```lua
+function Div(el)
+  local div_type = el.classes[1]
+  if div_type == "participants" then
+    -- traitement spécifique
+  end
+end
+```
+
+# Point 3 — Prochaines étapes
+
+Discussion sur la feuille de route et les priorités pour la prochaine version.
+
+:::
+
+::: decisions
+- Publier la version 0.2.0 avant le 1er juillet 2026
+- Ajouter le support du format ODT pour le compte-rendu
+- Rédiger un guide de contribution
+:::
+
+::: actions
+| Action | Responsable | Échéance |
+|:-------|:-----------:|:--------:|
+| Corriger le filtre tableau | Chris Mann | 2026-06-15 |
+| Mettre à jour le README | Alice Dupont | 2026-06-20 |
+| Préparer les tests automatisés | Bob Martin | 2026-06-30 |
+:::
+
+::: next-meeting
+Lundi 6 juillet 2026 à 14 h 00 — visioconférence
+:::
+
+::: approval
+Compte-rendu soumis à approbation.
+:::
+
+::: footer
+[+33 7 81 81 18 11](tel:+33781811811) --- [chris@lesgrandsvoisins.com](mailto:chris@lesgrandsvoisins.com)\
+Siège : chez C. LHOMME - 146 bd de Montparnasse 75014 PARIS\
+Association d'intérêt général de loi 1901 RNA W751240710 SIREN 832760102
+:::

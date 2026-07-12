@@ -1,25 +1,11 @@
 ---
-title: Objet de la lettre
+title: Objet du Compte-rendu
 author: Prénom Nom
 ref: ref-YYYY-MM-DD
 date: today
 lang: fr
 place: Paris
 format:
-  lettre-html: 
-    output-file: template-lettre.html
-  lettre-pdf: 
-    output-file: template-lettre.pdf
-  lettre-typst: 
-    output-file: template-lettre-typst.pdf
-  lettre-docx: 
-    output-file: template-lettre.docx
-  lettre-odt: 
-    output-file: template-lettre.odt
-  lettre-md: 
-    output-file: template-lettre.md
-  lettre-plain: 
-    output-file: template-lettre.txt
   compte-rendu-html: 
     output-file: template-compte-rendu.html
   compte-rendu-pdf: 
@@ -34,20 +20,6 @@ format:
     output-file: template-compte-rendu.md
   compte-rendu-plain: 
     output-file: template-compte-rendu.txt
-  document-html: 
-    output-file: template-document.html
-  document-pdf: 
-    output-file: template-document.pdf
-  document-typst: 
-    output-file: template-document-typst.pdf
-  document-docx: 
-    output-file: template-document.docx
-  document-odt: 
-    output-file: template-document.odt
-  document-md: 
-    output-file: template-document.md
-  document-plain: 
-    output-file: template-document.txt
 ---
 
 ::: header
@@ -112,9 +84,9 @@ Madame, Monsieur,
 Compte-rende en attente d'approbation.
 :::
 
-
-Corps de la lettre ou du compte-rendu.
-
+::: body
+Corps du compte-rendu.
+:::
 
 ::: closing
 Veuillez agréer, Madame, Monsieur, l'expression de mes salutations distinguées.
