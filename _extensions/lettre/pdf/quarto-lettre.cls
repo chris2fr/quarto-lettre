@@ -67,13 +67,13 @@
 % % \RequirePackage[sfdefault]{plex-sans}
 % \RequirePackage[sfdefault,condensed]{plex-sans}
 \RequirePackage{plex-sans}
-% \RequirePackage{plex-serif}
 \RequirePackage{plex-serif}
 \RequirePackage{plex-mono}
 % \RequirePackage{FiraSerif}
 % \RequirePackage[sfdefault]{FiraSans}
 % \RequirePackage{FiraMono}
 
+\setmainfont{IBM Plex Serif}
 
 % Set by brand_fonts_latex (page.lua) via \IfFontExistsTF when brand.yml
 % declares a headings font that's actually available; empty (no-op) otherwise.

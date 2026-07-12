@@ -11,8 +11,11 @@ local french_quotes = false
 -- must not have that content spliced into them.
 -- quarto.format.format_identifier()['extension-name'] reliably names the
 -- extension supplying the current output format, for every format
--- (unlike `base-format` in doc.meta, which is inconsistent for `md`).
+-- (unlike `base-format` in doc.meta, which is inconsistent for `md`). Used
+-- both as the is_lettre flag and, in find_part further down, to look up a
+-- per-extension default part before falling back to base's shared one.
 local is_lettre = false
+local extension_name = nil
 
 -- Whether an actual div was found for each fallback-eligible class while
 -- walking the document (see find_part further down).
@@ -25,7 +28,8 @@ local seen = {}
 -- each format's filter pass, so reset here.
 function Meta(m)
   french_quotes = m['french-quotes'] == true
-  is_lettre = quarto.format.format_identifier()['extension-name'] == 'lettre'
+  extension_name = quarto.format.format_identifier()['extension-name']
+  is_lettre = extension_name == 'lettre'
   extracted = {}
   seen = {}
 end
@@ -258,12 +262,17 @@ end
 --      single document override a section without touching the project.
 --   2. <project root>/_parts/<class>.qmd (the directory holding _quarto.yml)
 --      — a project-wide override, e.g. shared by every letter in a project.
---   3. the base extension's own bundled default, resolved relative to this
---      filter script's own location (base/_filters/page.lua →
---      base/parts/<class>.qmd) so it works regardless of which
---      project or document is being rendered.
--- The first one found wins: a _parts/ file always takes precedence over the
--- extension's own default.
+--   3. the current extension's own bundled default, if it has one
+--      (_extensions/<extension-name>/parts/<class>.qmd) — e.g. `document`
+--      can ship its own header/footer, distinct from lettre's or
+--      compte-rendu's.
+--   4. the base extension's shared default (_extensions/base/parts/<class>.qmd),
+--      used by any extension that doesn't have its own — resolved relative
+--      to this filter script's own location (base/_filters/page.lua →
+--      base/parts/<class>.qmd) so it works regardless of which project or
+--      document is being rendered.
+-- The first one found wins: a _parts/ file always takes precedence over any
+-- extension default, and an extension's own default over base's shared one.
 local function find_part(class)
   local candidates = {}
   if PANDOC_STATE and PANDOC_STATE.input_files and #PANDOC_STATE.input_files > 0 then
@@ -277,9 +286,11 @@ local function find_part(class)
     }))
   end
   if PANDOC_SCRIPT_FILE then
-    table.insert(candidates, pandoc.path.join({
-      pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', 'parts', class .. '.qmd'
-    }))
+    local extensions_dir = pandoc.path.join({ pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', '..' })
+    if extension_name and extension_name ~= 'base' then
+      table.insert(candidates, pandoc.path.join({ extensions_dir, extension_name, 'parts', class .. '.qmd' }))
+    end
+    table.insert(candidates, pandoc.path.join({ extensions_dir, 'base', 'parts', class .. '.qmd' }))
   end
   for _, path in ipairs(candidates) do
     local f = io.open(path, 'r')
@@ -300,6 +311,9 @@ end
 -- an existing _parts/ (even an empty one), so this only ever fires once.
 -- `classes` is HEADER_FOOTER for compte-rendu/document (they only support
 -- header/footer parts) and FALLBACK_CLASSES for lettre (the full set).
+-- Reuses find_part(): since _parts/ doesn't exist yet at this point, it can
+-- only resolve to an extension default (the current extension's own, or
+-- base's shared one), which is exactly what should be copied here too.
 local function scaffold_parts(classes)
   if not PANDOC_SCRIPT_FILE then return end
   local base_dir
@@ -313,29 +327,21 @@ local function scaffold_parts(classes)
   local parts_dir = pandoc.path.join({ base_dir, '_parts' })
   if pcall(pandoc.system.list_directory, parts_dir) then return end
 
-  local generic_dir = pandoc.path.join({
-    pandoc.path.directory(PANDOC_SCRIPT_FILE), '..', 'parts'
-  })
-  local ok, files = pcall(pandoc.system.list_directory, generic_dir)
-  if not ok then return end
-
   local copied = false
-  for _, name in ipairs(files) do
-    local class = name:match('^(.*)%.qmd$')
-    if class and classes[class] then
-      local src = io.open(pandoc.path.join({ generic_dir, name }), 'r')
-      if src then
-        local content = src:read('a')
-        src:close()
-        if not copied then
-          pandoc.system.make_directory(parts_dir, true)
-          copied = true
-        end
-        local dst = io.open(pandoc.path.join({ parts_dir, name }), 'w')
-        if dst then
-          dst:write(content)
-          dst:close()
-        end
+  for class in pairs(classes) do
+    local path = find_part(class)
+    local src = path and io.open(path, 'r')
+    if src then
+      local content = src:read('a')
+      src:close()
+      if not copied then
+        pandoc.system.make_directory(parts_dir, true)
+        copied = true
+      end
+      local dst = io.open(pandoc.path.join({ parts_dir, class .. '.qmd' }), 'w')
+      if dst then
+        dst:write(content)
+        dst:close()
       end
     end
   end
