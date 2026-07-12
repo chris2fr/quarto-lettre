@@ -12,6 +12,15 @@ All three share a common `_extensions/base/` resource directory (Lua filters, CS
 
 ---
 
+## Quickstarts
+
+```
+quarto use template chris2fr/quarto/doc
+quarto add chris2fr/quarto
+```
+
+---
+
 ## Requirements
 
 - Quarto ≥ 1.9.0

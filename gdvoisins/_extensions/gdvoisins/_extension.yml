@@ -1,0 +1,8 @@
+title: Gdvoisins
+author: Chris Mann
+version: 0.1.15
+quarto-required: ">=1.9.0"
+contributes:
+  metadata:
+    project:
+      brand: _brand.yml
