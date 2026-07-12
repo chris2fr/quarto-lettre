@@ -1,0 +1,5 @@
+| Action | Responsable | Échéance |
+|:-------|:-----------:|:--------:|
+| Corriger le filtre tableau | Chris Mann | 2026-06-15 |
+| Mettre à jour le README | Alice Dupont | 2026-06-20 |
+| Préparer les tests automatisés | Bob Martin | 2026-06-30 |

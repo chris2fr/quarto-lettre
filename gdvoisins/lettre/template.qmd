@@ -6,6 +6,7 @@ date: 2026-06-07
 lang: fr
 place: Paris
 bibliography: biblio.bib
+brand: _brand/_brand.yml
 # maring-all: 20mm
 # marginx: 20mm
 # marginy: 20mm

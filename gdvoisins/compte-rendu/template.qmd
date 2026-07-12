@@ -6,6 +6,7 @@ place: Paris
 organization: Les Grands Voisins
 lang: fr
 bibliography: biblio.bib
+brand: _brand/_brand.yml
 # maring-all: 20mm
 # marginx: 20mm
 # marginy: 20mm
