@@ -24,6 +24,7 @@
 \RequirePackage[hidelinks]{hyperref}
 \RequirePackage[french]{babel}
 \RequirePackage[osf]{libertinus}
+\RequirePackage{fontspec}
 \RequirePackage[autostyle=true,french=guillemets]{csquotes}
 \RequirePackage{enumitem}
 \RequirePackage{soul}
@@ -40,11 +41,15 @@
 \RequirePackage{afterpage}
 \RequirePackage{titlesec}
 
+% Set by brand_fonts_latex (page.lua) via \IfFontExistsTF when brand.yml
+% declares a headings font that's actually available; empty (no-op) otherwise.
+\newcommand{\QLheadingfont}{}
+
 \titleformat{\section}
-  {\normalfont\normalsize\bfseries}{\thesection}{0pt}{}
+  {\normalfont\QLheadingfont\normalsize\bfseries}{\thesection}{0pt}{}
   [\vspace{2pt}\titlerule]
 \titleformat{\subsection}
-  {\normalfont\small\bfseries\itshape}{\thesubsection}{0pt}{}
+  {\normalfont\QLheadingfont\small\bfseries\itshape}{\thesubsection}{0pt}{}
 \titlespacing*{\section}{0pt}{1.5ex plus 0.5ex minus 0.2ex}{1ex plus 0.2ex}
 \titlespacing*{\subsection}{0pt}{1.2ex plus 0.3ex minus 0.2ex}{0.5ex plus 0.1ex}
 

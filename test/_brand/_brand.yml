@@ -8,12 +8,25 @@ logo:
   small: logo/logo-lesgrandsvoisins-300-50-white.png
   medium: logo/logo-lesgrandsvoisins-600-100-white.png
   large: logo/logo-lesgrandsvoisins-900-150-white.png
+
 typography:
   fonts:
     - family: Jura
       source: google
-  base: Jura
+    - family: Space Mono
+      source: google
+    - family: Fira Sans
+      source: google
+  base: Fira Sans
   headings: Jura
+  link:
+    decoration: underline
+  monospace: Space Mono
+  monospace-inline:
+    color: "#222222"
+    background-color: "#ddeaf1" # or use a named color from `color`
+  monospace-block: 
+    background-color: "#eef4f8"
 
 color:
   background:

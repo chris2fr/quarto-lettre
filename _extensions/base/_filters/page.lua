@@ -480,9 +480,112 @@ local function resolve_margins(doc)
   if not doc.meta['margin-bottom'] and marginy then doc.meta['margin-bottom'] = marginy end
 end
 
+-- Quarto's own brand→CSS pipeline (and, for LaTeX, its brand→fontspec
+-- wiring) assumes a Bootstrap/standard template; both extensions here use
+-- `theme: none` (HTML) and a fully custom .cls (PDF), so brand.yml
+-- typography is otherwise silently ignored in both. Resolve the brand's
+-- base/headings/monospace font families once, for reuse by the HTML and
+-- LaTeX injectors below. Returns nil if no brand is configured at all.
+local function brand_font_families()
+  local mode = quarto.brand.has_mode('light') and 'light'
+            or quarto.brand.has_mode('dark') and 'dark'
+  if not mode then return nil end
+
+  local function family_of(name)
+    local ok, typo = pcall(quarto.brand.get_typography, mode, name)
+    if ok and typo and typo.family then return typo.family end
+    return nil
+  end
+
+  return { base = family_of('base'), headings = family_of('headings'), monospace = family_of('monospace') }
+end
+
+-- Append a Google Fonts <link> plus matching font-family rules to
+-- header-includes (all three layout.html templates render
+-- $header-includes$ in <head>) from the brand's resolved fonts.
+local function brand_fonts_html(doc)
+  if not FORMAT:match('html') then return end
+  local fonts = brand_font_families()
+  if not fonts then return end
+  local base, headings, monospace = fonts.base, fonts.headings, fonts.monospace
+
+  local families, added = {}, {}
+  for _, f in ipairs({ base, headings, monospace }) do
+    if f and not added[f] then
+      added[f] = true
+      table.insert(families, f)
+    end
+  end
+  if #families == 0 then return end
+
+  local query = {}
+  for _, f in ipairs(families) do
+    table.insert(query, 'family=' .. f:gsub(' ', '+'))
+  end
+
+  local html = {
+    '<link rel="preconnect" href="https://fonts.googleapis.com">',
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
+    '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?' .. table.concat(query, '&') .. '&display=swap">',
+    '<style>',
+  }
+  if base then table.insert(html, '  body { font-family: "' .. base .. '", sans-serif; }') end
+  if headings then table.insert(html, '  h1, h2, h3, h4, h5, h6 { font-family: "' .. headings .. '", sans-serif; }') end
+  if monospace then table.insert(html, '  code, pre, kbd, samp { font-family: "' .. monospace .. '", monospace; }') end
+  table.insert(html, '</style>')
+
+  local blocks = {}
+  if doc.meta['header-includes'] then
+    for _, b in ipairs(doc.meta['header-includes']) do
+      table.insert(blocks, b)
+    end
+  end
+  table.insert(blocks, pandoc.RawBlock('html', table.concat(html, '\n')))
+  doc.meta['header-includes'] = pandoc.MetaBlocks(blocks)
+end
+
+-- Same idea for LaTeX/PDF, but safely: a brand's Google Font isn't
+-- guaranteed to be installed on the machine doing the rendering, and
+-- fontspec's \setmainfont/\setmonofont raise a hard compile error (not a
+-- silent fallback) for a family it can't find. Each assignment is guarded
+-- with \IfFontExistsTF so a missing font is a no-op — the class's existing
+-- default (Libertinus) stays in effect — instead of a broken build.
+-- \QLheadingfont (defined empty in each quarto-lettre.cls, used inside its
+-- \titleformat calls) is how the headings font reaches \section etc.
+local function brand_fonts_latex(doc)
+  if not FORMAT:match('latex') then return end
+  local fonts = brand_font_families()
+  if not fonts then return end
+
+  local latex = {}
+  if fonts.base then
+    table.insert(latex, '\\IfFontExistsTF{' .. fonts.base .. '}{\\setmainfont{' .. fonts.base .. '}}{}')
+  end
+  if fonts.headings then
+    table.insert(latex, '\\IfFontExistsTF{' .. fonts.headings .. '}{\\renewcommand{\\QLheadingfont}{\\fontspec{' .. fonts.headings .. '}}}{}')
+  end
+  if fonts.monospace then
+    table.insert(latex, '\\IfFontExistsTF{' .. fonts.monospace .. '}{\\setmonofont{' .. fonts.monospace .. '}}{}')
+  end
+  if #latex == 0 then return end
+
+  -- header-includes is a *list* of include-groups (each rendered as its own
+  -- pass of $header-includes$ inside layout.tex's $for(header-includes)$),
+  -- not a flat list of blocks — append our group rather than merging blocks.
+  local groups = {}
+  if doc.meta['header-includes'] then
+    for _, g in ipairs(doc.meta['header-includes']) do
+      table.insert(groups, g)
+    end
+  end
+  table.insert(groups, pandoc.MetaBlocks({ pandoc.RawBlock('latex', table.concat(latex, '\n')) }))
+  doc.meta['header-includes'] = pandoc.MetaList(groups)
+end
+
 -- Inject the extracted values into document metadata so layout templates can
 -- reference $page-header$ and $page-footer$; resolve margin fallbacks (see
--- resolve_margins); scaffold/fall back to _parts/header.qmd and
+-- resolve_margins) and brand fonts for HTML/LaTeX (see brand_fonts_html /
+-- brand_fonts_latex); scaffold/fall back to _parts/header.qmd and
 -- _parts/footer.qmd for every extension; then, lettre only, fill in any of
 -- from/date/to/subject/ref/opening/closing/signature missing from the
 -- document, in their canonical position (see `is_lettre` above).
@@ -492,6 +595,8 @@ function Pandoc(doc)
   end
 
   resolve_margins(doc)
+  brand_fonts_html(doc)
+  brand_fonts_latex(doc)
 
   scaffold_parts(is_lettre and FALLBACK_CLASSES or HEADER_FOOTER)
 

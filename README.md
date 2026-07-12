@@ -222,6 +222,19 @@ format:
 
 ---
 
+## Brand fonts
+
+All three extensions use `theme: none` for HTML (a fully custom template, no Bootstrap) and a fully custom LaTeX `.cls` for PDF, so Quarto's own [brand.yml](https://quarto.org/docs/authoring/brand.html) → CSS/fontspec pipeline never runs there — `typography` in a brand file is otherwise silently ignored in both. This is filled in by hand: the resolved `base`, `headings`, and `monospace` font families are read from the active brand and applied per format.
+
+This works with any brand — the project's own (`brand: _brand/_brand.yml` in `_quarto.yml` or document front matter) if set, otherwise the extensions' own bundled default (`_extensions/base/brand.yml`, Jura) via `contributes.metadata.project.brand` — and needs nothing from the document itself; a document with no brand configured at all gets no font changes, silently.
+
+- **HTML**: the fonts are injected as a Google Fonts `<link>` plus matching `font-family` CSS rules — always works, since the browser fetches them at view time regardless of what's installed on the machine that rendered the document.
+- **Typst**: gets brand fonts from Quarto's own typst-brand integration automatically (visible as `#show heading: set text(font: (...))` etc. in the generated `.typ`) — nothing to do there.
+- **PDF (LaTeX)**: each font is set with `\setmainfont`/`\setmonofont` (headings via a `\QLheadingfont` hook used inside the class's `\titleformat`), but only if `\IfFontExistsTF` confirms it's actually installed on the machine doing the render — otherwise that assignment is a silent no-op and the class's default (Libertinus) stays in effect. Unlike HTML's web fonts, a PDF font must be present locally to be embedded, and LaTeX's `fontspec` raises a **hard compile error** (not a fallback) for a family it can't find — this guard is what keeps a brand referencing an uninstalled Google Font from breaking the build.
+- **docx and odt do not pick up brand fonts** — no dynamic mechanism for either (the reference doc's styles are static).
+
+---
+
 ## French guillemets in HTML
 
 In LaTeX and Typst output, smart double quotes (`"..."`) are always rendered as French guillemets (« ... »). In HTML output this is opt-in via the `french-quotes` metadata key — enabled by default:
@@ -249,7 +262,8 @@ quarto render my-letter.qmd
 ```
 _extensions/
 ├── base/                          # Shared resources (not a format)
-│   ├── _filters/page.lua          # ::: header/footer :::, part fallback (all 3), lettre-only body/margins, quote style
+│   ├── _filters/page.lua          # ::: header/footer :::, part fallback (all 3), lettre-only body/margins, HTML+PDF brand fonts, quote style
+│   ├── brand.yml                  # default brand (contributed to every project via _extension.yml)
 │   ├── parts/                     # bundled default section content (see _parts/ above)
 │   │   └── <div>.qmd              # header.qmd, footer.qmd (all 3); from/date/... (lettre only)
 │   ├── md/
