@@ -1,0 +1,48 @@
+# minimal brand.yml enabling dark mode
+# replace with your brand colors, logos, and typography!
+meta:
+  name: ""
+  url: ""
+typography:
+  fonts:
+    - family: IBM Plex Mono
+      source: google
+    - family: IBM Plex Sans
+      source: google
+    - family: IBM Plex Serif
+      source: google
+    - family: IBM Plex Sans Condensed
+      source: google
+    # - family: Fira Sans
+    #   source: google
+    # - family: Fira Sans Condensed
+    #   source: google
+    # - family: Fira Sans Extra Condensed
+    #   source: google
+    # - family: Fira Mono
+    #   source: google
+    # - family: Fira Code
+    #   source: google
+    # - family: Playfair Display
+    #   source: google
+    # - family: Inter
+    #   source: google
+  base: IBM Plex Serif
+  headings: IBM Plex Sans
+  monospace: IBM Plex Mono
+  # base: IBM Plex Sans Condensed
+  # headings: IBM Plex Serif
+  # monospace: Plex Mono
+  # base: Fira Sans Condensed
+  # base: Fira Sans
+  # headings: Fira Sans
+  # monospace: Fira Mono
+  # base: Inter
+  # headings: Inter
+color:
+  background:
+    light: "#fff"
+    dark: "#000"
+  foreground:
+    light: "#000"
+    dark: "#fff"

@@ -1,5 +1,6 @@
 project: 
   type: default
   output-dir: _output
+  brand: _brand/_brand.yml
   lib-dir: _lib
   post-render: _extensions/chris2fr/base/scripts/clean-artifacts.sh
