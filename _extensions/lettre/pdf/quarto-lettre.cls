@@ -64,9 +64,11 @@
 % \RequirePackage{MinionPro}
 % \RequirePackage{mathastext}
 % \RequirePackage{fbb} % Bembo-like fbb
-\RequirePackage{plex-serif}
 % % \RequirePackage[sfdefault]{plex-sans}
-\RequirePackage[sfdefault,condensed]{plex-sans}
+% \RequirePackage[sfdefault,condensed]{plex-sans}
+\RequirePackage{plex-sans}
+% \RequirePackage{plex-serif}
+\RequirePackage[sfdefault]{plex-serif}
 \RequirePackage{plex-mono}
 % \RequirePackage{FiraSerif}
 % \RequirePackage[sfdefault]{FiraSans}
