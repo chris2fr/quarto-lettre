@@ -80,8 +80,8 @@
 % Set by brand_fonts_latex (page.lua) via \IfFontExistsTF when brand.yml
 % declares a headings font that's actually available; empty (no-op) otherwise.
 % \newcommand{\QLheadingfont}{}
-\newcommand{\QLheadingfont}{\sfdefault}
-
+% \newcommand{\QLheadingfont}{\sfdefault}
+\newcommand{\QLheadingfont}{\plexsans}
 \titleformat{\section}
   {\normalfont\QLheadingfont\LARGE\bfseries}{\thesection}{0pt}{}
   [\vspace{0.5em}\titlerule]
