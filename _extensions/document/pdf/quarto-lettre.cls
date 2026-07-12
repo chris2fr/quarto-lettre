@@ -96,13 +96,13 @@
 \titlespacing*{\subsection}{0pt}{1cm}{0.5ex plus 0.1ex}
 \titlespacing*{\subsubsection}{0pt}{0.6cm}{0.25ex plus 0.05ex}
 
-\titleformat{\section}
-  {\normalfont\QLheadingfont\normalsize\bfseries}{\thesection}{0pt}{}
-  [\vspace{2pt}\titlerule]
-\titleformat{\subsection}
-  {\normalfont\QLheadingfont\small\bfseries\itshape}{\thesubsection}{0pt}{}
-\titlespacing*{\section}{0pt}{1.5ex plus 0.5ex minus 0.2ex}{1ex plus 0.2ex}
-\titlespacing*{\subsection}{0pt}{1.2ex plus 0.3ex minus 0.2ex}{0.5ex plus 0.1ex}
+% \titleformat{\section}
+%   {\normalfont\QLheadingfont\normalsize\bfseries}{\thesection}{0pt}{}
+%   [\vspace{2pt}\titlerule]
+% \titleformat{\subsection}
+%   {\normalfont\QLheadingfont\small\bfseries\itshape}{\thesubsection}{0pt}{}
+% \titlespacing*{\section}{0pt}{1.5ex plus 0.5ex minus 0.2ex}{1ex plus 0.2ex}
+% \titlespacing*{\subsection}{0pt}{1.2ex plus 0.3ex minus 0.2ex}{0.5ex plus 0.1ex}
 
 \newcounter{none}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
