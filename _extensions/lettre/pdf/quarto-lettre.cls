@@ -84,7 +84,7 @@
 \newcommand{\QLheadingfont}{\plexsans}
 
 \titleformat{\section}
-  {\normalfont\QLheadingfont\LARGE\bfseries}{\thesection}{0pt}{}
+  {\normalfont\QLheadingfont\Large\bfseries}{\thesection}{0pt}{}
   [\vspace{0.5em}\titlerule]
 \titleformat{\subsection}
   {\normalfont\QLheadingfont\Large\bfseries}{\thesubsection}{0pt}{}

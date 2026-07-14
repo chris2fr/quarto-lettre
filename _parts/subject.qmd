@@ -1,1 +1,1 @@
-## {{< meta title >}}
+# {{< meta title >}}
